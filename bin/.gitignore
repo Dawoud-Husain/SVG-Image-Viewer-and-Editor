@@ -5,6 +5,7 @@
 *.o
 *.so
 *.DSYM
+*.SVG
 test1*
 test2*
 mem*

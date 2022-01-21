@@ -6,7 +6,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-#include "SVGParser.h" 
+#include "SVGParser.h"
 
 
 

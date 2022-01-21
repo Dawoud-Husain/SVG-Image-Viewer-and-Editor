@@ -14,7 +14,7 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
     
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
         if (cur_node->type == XML_ELEMENT_NODE) {
-            if(strcmp(cur_node->name, "rect") == 0){
+            if(strcmp((char *)(cur_node->name), "rect") == 0){
                 xmlAttr *attr;
                  Rectangle * tmpRectangle = (Rectangle*)malloc(sizeof(Rectangle));
                  List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
@@ -91,7 +91,7 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
     
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
         if (cur_node->type == XML_ELEMENT_NODE) {
-            if(strcmp(cur_node->name, "svg") == 0){
+            if(strcmp((char *)(cur_node->name), "svg") == 0){
                 xmlAttr *attr;
     
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
@@ -123,7 +123,7 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
 
 void  getNameSpace(xmlNode * a_node, char namespace[256]){
     // return a_node->ns->href ;
-    strcpy(namespace, a_node->ns->href);
+    strcpy(namespace, (char *)(a_node->ns->href));
     return;
 }
 
@@ -135,11 +135,11 @@ void getTitle(xmlNode * a_node, char title[256]){
         if (cur_node->type == XML_ELEMENT_NODE) {
             // printf("%s %s\n", cur_node->name, cur_node->content);
             // printf("node type: Element, name: %s\n", cur_node->name);
-            if(strcmp(cur_node->name, "title") == 0){
+            if(strcmp((char *)(cur_node->name), "title") == 0){
                 // printf("content: %s\n", cur_node->children->content);
 
-                if (cur_node->children->content != NULL && strcmp(cur_node->children->content, "") != 0){
-                    strcat(title,cur_node->children->content);
+                if (cur_node->children->content != NULL && strcmp((char *)(cur_node->children->content), "") != 0){
+                    strcat(title,(char *)(cur_node->children->content));
                 }
             }
         }
@@ -156,12 +156,12 @@ void getDescription(xmlNode * a_node, char description[256]){
         if (cur_node->type == XML_ELEMENT_NODE) {
             // printf("%s %s\n", cur_node->name, cur_node->content);
             // printf("node type: Element, name: %s\n", cur_node->name);
-            if(strcmp(cur_node->name, "desc") == 0){
+            if(strcmp((char *)(cur_node->name), "desc") == 0){
                 // printf("content: %s\n", cur_node->children->content);
 
                 if (cur_node->children->content != NULL){
         
-                    strcat(description, cur_node->children->content); 
+                    strcat(description, (char *)(cur_node->children->content)); 
                 }
             }
         }

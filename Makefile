@@ -38,6 +38,9 @@ clean:
 xmlExample: $(SRC)libXmlExample.c
 	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)xmlExample
 
+runner: $(SRC)main.c $(INC)LinkedListAPI.h $(INC)SVG*.h
+	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)main.c $(SRC)SVG*.c  $(SRC)LinkedListAPI.c -I$(INC) -lxml2 -o $(BIN)runner
+
 #These are sample targets for the list demo code included in the class examples.  They will not be used
 #for A1, but they can help you figure out who to set up a target for your own test main
 

@@ -51,11 +51,11 @@ SVG* createSVG(const char* fileName){
    
 
     // Other Acctributes 
-//    List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
-//    getOtherAttributesFromNode(root_element,attributeList);
-//    createdSVG->otherAttributes = attributeList; 
 
-
+   List* acctsList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+   getOtherAttributesFromNode(root_element, acctsList);
+   createdSVG->otherAttributes = acctsList; 
+ 
 
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
 
@@ -116,23 +116,26 @@ char* SVGToString(const SVG* img){
     strcat(OutputString, "Description: \n");
     strcat(OutputString,img->description);
      strcat(OutputString, "\n\n");
+     printf("****************************dsa**********************\n\n");
 
+    
+    strcat(OutputString, "Other Attributes\n");
+    void* svcAccElement;
+    ListIterator accIter = createIterator(img->otherAttributes);
+	while ((svcAccElement = nextElement(&accIter)) != NULL){
+        printf("dasdsad");
+		Attribute* tmpAttribute = (Attribute*)svcAccElement;
+		char* str = attributeToString(tmpAttribute);
 
-
-    // void* svcAccElement;
-    // ListIterator accIter = createIterator(img->otherAttributes);
-	// while ((svcAccElement = nextElement(&accIter)) != NULL){
-	// 	Attribute* tmpAttribute = (Attribute*)svcAccElement;
-	// 	char* str = attributeToString(tmpAttribute);
-
-    //     strcat(OutputString, "Other Attributes\n");
-    //     strcat(OutputString,str);
-    //     strcat(OutputString, "\n\n");
+        strcat(OutputString, "Other Attributes\n");
+        strcat(OutputString,str);
+        strcat(OutputString, "\n\n");
 		
-	// 	//Since list.printData dynamically allocates the string, we must free it
-	// 	free(str);
-	// }
+		//Since list.printData dynamically allocates the string, we must free it
+		free(str);
+	}
 
+     
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
     // strcat(SVGToString,rectangleToString(img->rectangles));
     // //All objects in the list will be of type Circle.  It must not be NULL.  It may be empty.

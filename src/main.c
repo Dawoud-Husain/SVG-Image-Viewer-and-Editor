@@ -25,8 +25,6 @@ int main(int argc, char **argv)
    char * string = SVGToString(mySVG);
    printf("%s", string);
    free(string);
-
-    printf("****************************\n\ndsa**********************\n\n");
    deleteSVG(mySVG);
     
     return 0;

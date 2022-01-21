@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
@@ -28,6 +30,14 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
             
                         if(strcmp(attrName, "x") == 0){
                             tmpRectangle->x = strtof(cont, NULL);
+                            
+                            int index = 0;
+                            char * tempPointer;
+                            for (tempPointer = cont; *tempPointer != '\0'; tempPointer++) {
+                                if(!(isdigit(*tempPointer)));
+                                tmpRectangle->units[index] = *tempPointer;
+                                index ++;
+                            }
                         }
 
                         else if(strcmp(attrName, "y") == 0){
@@ -93,7 +103,9 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
         if (cur_node->type == XML_ELEMENT_NODE) {
             if(strcmp((char *)(cur_node->name), "svg") == 0){
                 xmlAttr *attr;
-    
+                   
+                 //List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+                 
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
                     xmlNode *value = attr->children;
                     char *attrName = (char *)attr->name;
@@ -107,6 +119,8 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
                     strcpy(valueArray, cont);
 
                     strcpy(tmpAttribute->value,valueArray);
+
+                    // printf("%s %s", tmpAttribute->name, tmpAttribute->value);
                         
                     insertBack(attributeList, (void*)tmpAttribute);
                 }

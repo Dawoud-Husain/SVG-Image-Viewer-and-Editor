@@ -33,8 +33,10 @@ char* attributeToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
+	
 
-	sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value);
+	sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value); //Problem?
+
 	return tmpStr;
 }
 
@@ -83,7 +85,7 @@ char* rectangleToString(void* data){
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
 
-	sprintf(tmpStr, "x: %f y:%f width:%f height:%f\n", tmpRectangle->x, tmpRectangle->y, tmpRectangle->width, tmpRectangle->height);
+	sprintf(tmpStr, "x: %f y:%f width:%f height:%f unit: %s\n", tmpRectangle->x, tmpRectangle->y, tmpRectangle->width, tmpRectangle->height, tmpRectangle->units);
 
     void* elem;
 
@@ -91,7 +93,7 @@ char* rectangleToString(void* data){
 	while ((elem = nextElement(&iter)) != NULL){
 		Attribute* tmpAttribute = (Attribute*)elem;
 		char* str = attributeToString(tmpAttribute);
-	
+
         strcat(tmpStr, "Rectangle Attribute\n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");

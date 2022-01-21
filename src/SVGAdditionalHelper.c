@@ -82,10 +82,72 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
     return rectsList;
 }
 
-List* getCirclesFromNode(xmlNode * a_node){
-    List* circles = initializeList(&circleToString, &deleteCircle, &compareCircles);
-    return circles;
+List* getCirclesFromNode(xmlNode * a_node, List * circlesList){
+    
+      xmlNode *cur_node = NULL;
+    
+    for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
+        if (cur_node->type == XML_ELEMENT_NODE) {
+            if(strcmp((char *)(cur_node->name), "circle") == 0){
+                xmlAttr *attr;
+                 Circle * tmpCircle = (Circle*)malloc(sizeof(Circle));
+                 List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+                 
+                for (attr = cur_node->properties; attr != NULL; attr = attr->next){
+                        xmlNode *value = attr->children;
+                        char *attrName = (char *)attr->name;
+                        char *cont = (char *)(value->content);
+
+                        //printf("\tattribute name: %s, attribute value = %s\n", attrName, cont);
+            
+                        if(strcmp(attrName, "cx") == 0){
+                            tmpCircle->cx = strtof(cont, NULL);
+                            
+                            int index = 0;
+                            char * tempPointer;
+                            for (tempPointer = cont; *tempPointer != '\0'; tempPointer++) {
+                                if(isalpha(*tempPointer)){
+                                    tmpCircle->units[index] = *tempPointer;
+                                    index ++;
+                                }
+                            }
+                        }
+
+                        else if(strcmp(attrName, "cy") == 0){
+                            tmpCircle->cy =  strtof(cont, NULL);
+                        }
+                        
+                        else if(strcmp(attrName, "r") == 0){
+                            if(strtof(cont, NULL) >= 0){
+                                 tmpCircle->r =  strtof(cont, NULL);
+                            }
+                        }
+
+                        else{
+                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+
+                            tmpAttribute->name = attrName;
+
+                            char valueArray[strlen(cont) + 1];
+                            strcpy(valueArray, cont);
+
+                            strcpy(tmpAttribute->value,valueArray);
+                             
+                            insertBack(attributeList, (void*)tmpAttribute);
+                        }
+                  }
+
+                  tmpCircle->otherAttributes = attributeList;
+                  insertBack(circlesList, (void*)tmpCircle);
+            }
+        }
+
+        getCirclesFromNode(cur_node->children, circlesList);
+    }
+
+    return circlesList;
 }
+
 List* getGroupsFromNode(xmlNode * a_node){
     List* groups = initializeList(&groupToString, &deleteGroup, &compareGroups);
     return groups;

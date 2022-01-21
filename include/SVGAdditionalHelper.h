@@ -17,7 +17,7 @@ void getDescription(xmlNode * a_node, char description[256]);
 
 
 List* getRectsFromNode(xmlNode * a_node, List* rectsList);
-List* getCirclesFromNode(xmlNode * a_node);
+List* getCirclesFromNode(xmlNode * a_node, List * circlesList);
 List* getGroupsFromNode(xmlNode * a_node);
 List* getPathsFromNode(xmlNode * a_node);
 List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList);

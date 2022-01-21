@@ -108,12 +108,50 @@ int compareRectangles(const void *first, const void *second){
 }
 
 void deleteCircle(void* data){
-    return;
+     Circle* tmpcircle;
+	
+	if (data == NULL){
+		return;
+	}
+	
+	tmpcircle = (Circle*)data;
+	
+	//free(tmpcircle->otherAttributes);
+    freeList(tmpcircle->otherAttributes);	
+	free(tmpcircle);
 }
 
 char* circleToString(void* data){
-      char* circleToString = "";
-    return circleToString;
+    char* tmpStr;
+	Circle* tmpCircle;
+	int len;
+	
+	if (data == NULL){
+		return NULL;
+	}
+	
+	tmpCircle = (Circle*)data;
+		
+	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
+    len = 100000;
+	tmpStr = (char*)malloc(sizeof(char)*len);
+
+	sprintf(tmpStr, "cx: %f cy:%f r:%f unit: %s\n", tmpCircle->cx, tmpCircle->cy, tmpCircle->r, tmpCircle->units);
+
+    void* elem;
+
+    ListIterator iter = createIterator(tmpCircle->otherAttributes);
+	while ((elem = nextElement(&iter)) != NULL){
+		Attribute* tmpAttribute = (Attribute*)elem;
+		char* str = attributeToString(tmpAttribute);
+
+        strcat(tmpStr, "Circle Attribute\n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+
+	return tmpStr;
 }
 
 int compareCircles(const void *first, const void *second){

@@ -64,7 +64,9 @@ SVG* createSVG(const char* fileName){
     createdSVG->rectangles = rectsList; 
 
     // //All objects in the list will be of type Circle.  It must not be NULL.  It may be empty.
-
+    List* circlesList = initializeList(&circleToString, &deleteCircle, &compareCircles);
+    getCirclesFromNode(root_element, circlesList);
+    createdSVG->circles = circlesList; 
 
 
     // createdSVG->circles =  getCirclesFromNode(root_element);
@@ -121,8 +123,6 @@ char* SVGToString(const SVG* img){
      strcat(OutputString, "\n\n");
    
 
-    
-    strcat(OutputString, "Other Attributes\n");
     void* svcAccElement;
     ListIterator accIter = createIterator(img->otherAttributes);
 	while ((svcAccElement = nextElement(&accIter)) != NULL){
@@ -130,7 +130,7 @@ char* SVGToString(const SVG* img){
 		Attribute* tmpAttribute = (Attribute*)svcAccElement;
 		char* str = attributeToString(tmpAttribute);
 
-        // strcat(OutputString, "Other Attributes\n");
+        strcat(OutputString, "Other Attributes\n");
         strcat(OutputString,str);
         strcat(OutputString, "\n\n");
 		
@@ -156,13 +156,27 @@ char* SVGToString(const SVG* img){
 		// printf("%s\n", str);
         strcat(OutputString, "Rectangle\n");
         strcat(OutputString,str);
-         strcat(OutputString, "\n\n");
+        strcat(OutputString, "\n\n");
 		
 		//Since list.printData dynamically allocates the string, we must free it
 		free(str);
 	}
 	
- 
+    void* circleElement;
+    ListIterator circleIter = createIterator(img->circles);
+	while ((circleElement = nextElement(&circleIter)) != NULL){
+		Circle* tmpCircle = (Circle*)circleElement;
+		char* str = circleToString(tmpCircle);
+		// printf("%s\n", str);
+        strcat(OutputString, "Circle\n");
+        strcat(OutputString,str);
+         strcat(OutputString, "\n\n");
+		
+		//Since list.printData dynamically allocates the string, we must free it
+		free(str);
+	}
+
+
     return OutputString;
 }
 
@@ -170,6 +184,7 @@ void deleteSVG(SVG* img){
     // This function deallocates the object, including all of its subcomponents.
     freeList(img->otherAttributes);
     freeList(img->rectangles);	
+    freeList(img->circles);	
     free(img);
 }
 

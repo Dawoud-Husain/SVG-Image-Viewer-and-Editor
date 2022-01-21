@@ -64,7 +64,10 @@ SVG* createSVG(const char* fileName){
     createdSVG->rectangles = rectsList; 
 
     // //All objects in the list will be of type Circle.  It must not be NULL.  It may be empty.
-    // createdSVG->circles =  LgetCirclesFromNode(root_element);
+
+
+
+    // createdSVG->circles =  getCirclesFromNode(root_element);
     // //All objects in the list will be of type Path.  It must not be NULL.  It may be empty.
     // createdSVG->paths = getGroupsFromNode(root_element);
     // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
@@ -116,18 +119,18 @@ char* SVGToString(const SVG* img){
     strcat(OutputString, "Description: \n");
     strcat(OutputString,img->description);
      strcat(OutputString, "\n\n");
-     printf("****************************dsa**********************\n\n");
+   
 
     
     strcat(OutputString, "Other Attributes\n");
     void* svcAccElement;
     ListIterator accIter = createIterator(img->otherAttributes);
 	while ((svcAccElement = nextElement(&accIter)) != NULL){
-        printf("dasdsad");
+        
 		Attribute* tmpAttribute = (Attribute*)svcAccElement;
 		char* str = attributeToString(tmpAttribute);
 
-        strcat(OutputString, "Other Attributes\n");
+        // strcat(OutputString, "Other Attributes\n");
         strcat(OutputString,str);
         strcat(OutputString, "\n\n");
 		
@@ -165,7 +168,7 @@ char* SVGToString(const SVG* img){
 
 void deleteSVG(SVG* img){
     // This function deallocates the object, including all of its subcomponents.
-    // freeList(img->otherAttributes);
+    freeList(img->otherAttributes);
     freeList(img->rectangles);	
     free(img);
 }

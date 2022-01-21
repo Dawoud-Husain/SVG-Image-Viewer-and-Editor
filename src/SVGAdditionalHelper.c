@@ -34,9 +34,10 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
                             int index = 0;
                             char * tempPointer;
                             for (tempPointer = cont; *tempPointer != '\0'; tempPointer++) {
-                                if(!(isdigit(*tempPointer)));
-                                tmpRectangle->units[index] = *tempPointer;
-                                index ++;
+                                if(isalpha(*tempPointer)){
+                                    tmpRectangle->units[index] = *tempPointer;
+                                    index ++;
+                                }
                             }
                         }
 

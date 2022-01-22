@@ -153,9 +153,56 @@ List* getGroupsFromNode(xmlNode * a_node){
     return groups;
 }
 
-List* getPathsFromNode(xmlNode * a_node){
-    List* paths = initializeList(&pathToString, &deletePath, &comparePaths);
-    return paths;
+List* getPathsFromNode(xmlNode * a_node, List* pathsList){
+    
+    xmlNode *cur_node = NULL;
+    
+    for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
+        if (cur_node->type == XML_ELEMENT_NODE) {
+            if(strcmp((char *)(cur_node->name), "path") == 0){
+                xmlAttr *attr;
+                Path * tmpPath = (Path*)malloc(sizeof(Path)+10000);
+                List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+                 
+                for (attr = cur_node->properties; attr != NULL; attr = attr->next){
+                        xmlNode *value = attr->children;
+                        char *attrName = (char *)attr->name;
+                        char *cont = (char *)(value->content);
+
+                        //printf("\tattribute name: %s, attribute value = %s\n", attrName, cont);
+            
+                        if(strcmp(attrName, "d") == 0){    
+                            int index = 0;
+                            char * tempPointer;
+                            for (tempPointer = cont; *tempPointer != '\0'; tempPointer++) {
+                                tmpPath->data[index] = *tempPointer;
+                                index ++;   
+                            }
+                        }
+
+                        else{
+                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+
+                            tmpAttribute->name = attrName;
+
+                            char valueArray[strlen(cont) + 1];
+                            strcpy(valueArray, cont);
+
+                            strcpy(tmpAttribute->value,valueArray);
+                             
+                            insertBack(attributeList, (void*)tmpAttribute);
+                        }
+                  }
+
+                  tmpPath->otherAttributes = attributeList;
+                  insertBack(pathsList, (void*)tmpPath);
+            }
+        }
+
+        getPathsFromNode(cur_node->children, pathsList);
+    }
+
+    return pathsList;
 }
 
 List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){

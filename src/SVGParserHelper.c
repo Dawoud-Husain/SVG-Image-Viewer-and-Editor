@@ -159,11 +159,50 @@ int compareCircles(const void *first, const void *second){
 }
 
 void deletePath(void* data){
-    return;
+    Path* tmppath;
+	
+	if (data == NULL){
+		return;
+	}
+	
+	tmppath = (Path*)data;
+
+    freeList(tmppath->otherAttributes);	
+	free(tmppath);
 }
+
+
 char* pathToString(void* data){
-    char* pathToString = "";
-    return pathToString;
+   char* tmpStr;
+	Path* tmpPath;
+	int len;
+	
+	if (data == NULL){
+		return NULL;
+	}
+	
+	tmpPath = (Path*)data;
+		
+	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
+    len = 10000000;
+	tmpStr = (char*)malloc(sizeof(char)*len);
+
+	sprintf(tmpStr, "data: %s\n",  tmpPath->data);
+
+    void* elem;
+
+    ListIterator iter = createIterator(tmpPath->otherAttributes);
+	while ((elem = nextElement(&iter)) != NULL){
+		Attribute* tmpAttribute = (Attribute*)elem;
+		char* str = attributeToString(tmpAttribute);
+
+        strcat(tmpStr, "Path Attribute\n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+
+	return tmpStr;
 }
 
 int comparePaths(const void *first, const void *second){

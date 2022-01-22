@@ -36,7 +36,6 @@ SVG* createSVG(const char* fileName){
     root_element = xmlDocGetRootElement(doc);
 
     SVG * createdSVG = malloc(sizeof(SVG) + 100000);
-
     
     //Namespace associated with our SVG struct.  May be not be empty.  While a real SVG struct might have
     //multiple namespaces associated with it, we will assume there is only one
@@ -48,14 +47,16 @@ SVG* createSVG(const char* fileName){
 
     //Decription of our SVG struct - from the optional <desc> element.  May be empty.
     getDescription(root_element, createdSVG->description);
-   
 
-    // Other Acctributes 
 
-   List* acctsList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
-   getOtherAttributesFromNode(root_element, acctsList);
-   createdSVG->otherAttributes = acctsList; 
- 
+    //Additional SVG attributes - i.e. attributes of the svg XML element.  
+    //All objects in the list will be of type Attribute.  It must not be NULL.  It may be empty.  
+    //Do not put the namespace here, since it already has its own field
+
+    List* acctsList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+    getOtherAttributesFromNode(root_element, acctsList);
+    createdSVG->otherAttributes = acctsList; 
+
 
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
 
@@ -68,21 +69,16 @@ SVG* createSVG(const char* fileName){
     getCirclesFromNode(root_element, circlesList);
     createdSVG->circles = circlesList; 
 
-
-    // createdSVG->circles =  getCirclesFromNode(root_element);
     // //All objects in the list will be of type Path.  It must not be NULL.  It may be empty.
     // createdSVG->paths = getGroupsFromNode(root_element);
+    List* pathsList = initializeList(&pathToString, &deletePath, &comparePaths);
+    getPathsFromNode(root_element, pathsList);
+    createdSVG->paths = pathsList; 
+
+
     // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
     // createdSVG->groups = getPathsFromNode(root_element);
    
-    //Additional SVG attributes - i.e. attributes of the svg XML element.  
-    //All objects in the list will be of type Attribute.  It must not be NULL.  It may be empty.  
-    //Do not put the namespace here, since it already has its own field
-
-    // createdSVG->otherAttributes =  initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
-
-    
-
     xmlFreeDoc(doc);
     xmlCleanupParser();
 
@@ -95,34 +91,30 @@ char* SVGToString(const SVG* img){
 // This function returns a humanly readable string representation of the entire vector image object. It will be
 // used mostly by you, for debugging your parser. It must not modify the vector image object in any way. The
 // function must allocate the string dynamically.
-    //strcat(destination,source)
 
-    // printf("%s\n",  img->namespace);
-    // printf("%s\n",  img->title);
-    //  printf("%s\n",  img->description);
     char *OutputString;
     
     OutputString = (char*) malloc(sizeof(char) * 10000024);
+
     // char *OutputString = calloc(sizeof(char) * 1000024, 0);
 
-     strcat(OutputString, "\n\n");
+    strcat(OutputString, "\n\n");
     strcat(OutputString, "Namespace: \n");
     strcat(OutputString, img->namespace);
-     strcat(OutputString, "\n\n");
+    strcat(OutputString, "\n\n");
 
     //Title of our SVG struct - from the optional <title> element.  May be empty.
    
     strcat(OutputString, "Title: \n");
     strcat(OutputString,img->title);
-     strcat(OutputString, "\n\n");
+    strcat(OutputString, "\n\n");
     
     // //Decription of our SVG struct - from the optional <desc> element.  May be empty.
     
     strcat(OutputString, "Description: \n");
     strcat(OutputString,img->description);
-     strcat(OutputString, "\n\n");
+    strcat(OutputString, "\n\n");
    
-
     void* svcAccElement;
     ListIterator accIter = createIterator(img->otherAttributes);
 	while ((svcAccElement = nextElement(&accIter)) != NULL){
@@ -133,8 +125,6 @@ char* SVGToString(const SVG* img){
         strcat(OutputString, "Other Attributes\n");
         strcat(OutputString,str);
         strcat(OutputString, "\n\n");
-		
-		//Since list.printData dynamically allocates the string, we must free it
 		free(str);
 	}
 
@@ -153,12 +143,9 @@ char* SVGToString(const SVG* img){
 	while ((rectangleElement = nextElement(&iter)) != NULL){
 		Rectangle* tmpRectangle = (Rectangle*)rectangleElement;
 		char* str = rectangleToString(tmpRectangle);
-		// printf("%s\n", str);
         strcat(OutputString, "Rectangle\n");
         strcat(OutputString,str);
         strcat(OutputString, "\n\n");
-		
-		//Since list.printData dynamically allocates the string, we must free it
 		free(str);
 	}
 	
@@ -167,15 +154,23 @@ char* SVGToString(const SVG* img){
 	while ((circleElement = nextElement(&circleIter)) != NULL){
 		Circle* tmpCircle = (Circle*)circleElement;
 		char* str = circleToString(tmpCircle);
-		// printf("%s\n", str);
         strcat(OutputString, "Circle\n");
         strcat(OutputString,str);
-         strcat(OutputString, "\n\n");
-		
-		//Since list.printData dynamically allocates the string, we must free it
+        strcat(OutputString, "\n\n");
 		free(str);
 	}
 
+
+    void* pathElement;
+    ListIterator pathIter = createIterator(img->paths);
+	while ((pathElement = nextElement(&pathIter)) != NULL){
+		Path* tmpPath = (Path*)pathElement;
+		char* str = pathToString(tmpPath);
+        strcat(OutputString, "Path\n");
+        strcat(OutputString,str);
+        strcat(OutputString, "\n\n");
+		free(str);
+	}
 
     return OutputString;
 }
@@ -185,6 +180,7 @@ void deleteSVG(SVG* img){
     freeList(img->otherAttributes);
     freeList(img->rectangles);	
     freeList(img->circles);	
+    freeList(img->paths);
     free(img);
 }
 

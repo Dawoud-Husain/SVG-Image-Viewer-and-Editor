@@ -105,17 +105,20 @@ char* SVGToString(const SVG* img){
     strcat(OutputString, img->namespace);
     strcat(OutputString, "\n\n");
 
+    strcat(OutputString, "*********************************************************** \n");
     //Title of our SVG struct - from the optional <title> element.  May be empty.
    
     strcat(OutputString, "Title: \n");
     strcat(OutputString,img->title);
     strcat(OutputString, "\n\n");
+    strcat(OutputString, "*********************************************************** \n");
     
     // //Decription of our SVG struct - from the optional <desc> element.  May be empty.
     
     strcat(OutputString, "Description: \n");
     strcat(OutputString,img->description);
     strcat(OutputString, "\n\n");
+    strcat(OutputString, "*********************************************************** \n");
    
     void* svcAccElement;
     ListIterator accIter = createIterator(img->otherAttributes);
@@ -129,6 +132,7 @@ char* SVGToString(const SVG* img){
         strcat(OutputString, "\n\n");
 		free(str);
 	}
+    strcat(OutputString, "*********************************************************** \n");
 
      
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
@@ -150,6 +154,7 @@ char* SVGToString(const SVG* img){
         strcat(OutputString, "\n\n");
 		free(str);
 	}
+    strcat(OutputString, "*********************************************************** \n");
 	
     void* circleElement;
     ListIterator circleIter = createIterator(img->circles);
@@ -162,6 +167,7 @@ char* SVGToString(const SVG* img){
 		free(str);
 	}
 
+    strcat(OutputString, "*********************************************************** \n");
 
     void* pathElement;
     ListIterator pathIter = createIterator(img->paths);
@@ -174,18 +180,20 @@ char* SVGToString(const SVG* img){
 		free(str);
 	}
 
+    strcat(OutputString, "*********************************************************** \n");
 
     void* groupElement;
     ListIterator groupIter = createIterator(img->groups);
 	while ((groupElement = nextElement(&groupIter)) != NULL){
 		Group* tmpGroup = (Group*)groupElement;
 		char* str = groupToString(tmpGroup);
-        strcat(OutputString, "Group\n");
+        strcat(OutputString, "Group: \n\n");
         strcat(OutputString,str);
         strcat(OutputString, "\n\n");
 		free(str);
 	}
 
+    strcat(OutputString, "*********************************************************** \n");
 
     return OutputString;
 }

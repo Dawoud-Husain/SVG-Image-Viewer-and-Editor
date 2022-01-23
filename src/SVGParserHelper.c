@@ -55,6 +55,14 @@ void deleteGroup(void* data){
 	
 	//free(tmpGroup->otherAttributes);
 
+	
+    freeList(tmpGroup->rectangles);	
+	
+    freeList(tmpGroup->circles);	
+	
+    freeList(tmpGroup->paths);	
+	freeList(tmpGroup->groups);	
+
     freeList(tmpGroup->otherAttributes);	
 	free(tmpGroup);
 }
@@ -72,38 +80,62 @@ char* groupToString(void* data){
 	tmpGroup = (Group*)data;
 		
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
-    len = 100000;
+    len = 1000000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
 
 	// sprintf(tmpStr, "x: %f y:%f width:%f height:%f unit: %s\n", tmpGroup->x, tmpGroup->y, tmpGroup->width, tmpGroup->height, tmpGroup->units);
 
     void* elem;
 
+	ListIterator iter1 = createIterator(tmpGroup->rectangles);
+	while ((elem = nextElement(&iter1)) != NULL){
+		Rectangle* tmpRectangle = (Rectangle*)elem;
+		char* str = rectangleToString(tmpRectangle);
 
-	ListIterator iter = createIterator(tmpPath->otherPaths);
-	while ((elem = nextElement(&iter)) != NULL){
-		Path* tmpPath = (Path*)elem;
-		char* str = attributeToString(tmpPath);
-
-        strcat(tmpStr, "Path Path\n");
+        strcat(tmpStr, "Rectangle \n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
 		free(str);
 	}
+
+	ListIterator iter2 = createIterator(tmpGroup->circles);
+	while ((elem = nextElement(&iter2)) != NULL){
+		Circle* tmpCircle = (Circle*)elem;
+		char* str = circleToString(tmpCircle);
+
+        strcat(tmpStr, "Circle \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+
 	
-	ListIterator iter = createIterator(tmpGroup->otherGroups);
-	while ((elem = nextElement(&iter)) != NULL){
-		Group* tmpGroup = (Group*)elem;
-		char* str = attributeToString(tmpGroup);
+	ListIterator iter3 = createIterator(tmpGroup->paths);
+	while ((elem = nextElement(&iter3)) != NULL){
+		Path* tmpPath = (Path*)elem;
+		
+		char* str = pathToString(tmpPath);
 
-        strcat(tmpStr, "Group Group\n");
+        strcat(tmpStr, "Path \n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
 		free(str);
 	}
 
-    ListIterator iter = createIterator(tmpGroup->otherAttributes);
-	while ((elem = nextElement(&iter)) != NULL){
+
+	// ListIterator iter4 = createIterator(tmpGroup->groups);
+	// while ((elem = nextElement(&iter4)) != NULL){
+	// 	Group* tmpGroup = (Group*)elem;
+	// 	char* str = groupToString(tmpGroup);
+
+    //     strcat(tmpStr, "Group \n");
+    //     strcat(tmpStr,str);
+    //     strcat(tmpStr, "\n");
+	// 	free(str);
+	// }
+
+    ListIterator iter5 = createIterator(tmpGroup->otherAttributes);
+	while ((elem = nextElement(&iter5)) != NULL){
 		Attribute* tmpAttribute = (Attribute*)elem;
 		char* str = attributeToString(tmpAttribute);
 
@@ -250,7 +282,7 @@ char* pathToString(void* data){
 	tmpPath = (Path*)data;
 		
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
-    len = 10000000;
+    len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
 
 	sprintf(tmpStr, "data: %s\n",  tmpPath->data);

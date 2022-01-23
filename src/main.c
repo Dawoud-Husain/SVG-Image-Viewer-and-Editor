@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     }
 
    SVG* mySVG = createSVG(argv[1]);
+
   
    char * string = SVGToString(mySVG);
    printf("%s", string);

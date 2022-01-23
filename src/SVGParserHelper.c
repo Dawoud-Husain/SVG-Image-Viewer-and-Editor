@@ -123,16 +123,16 @@ char* groupToString(void* data){
 	}
 
 
-	// ListIterator iter4 = createIterator(tmpGroup->groups);
-	// while ((elem = nextElement(&iter4)) != NULL){
-	// 	Group* tmpGroup = (Group*)elem;
-	// 	char* str = groupToString(tmpGroup);
+	ListIterator iter4 = createIterator(tmpGroup->groups);
+	while ((elem = nextElement(&iter4)) != NULL){
+		Group* tmpGroup = (Group*)elem;
+		char* str = groupToString(tmpGroup);
 
-    //     strcat(tmpStr, "Group \n");
-    //     strcat(tmpStr,str);
-    //     strcat(tmpStr, "\n");
-	// 	free(str);
-	// }
+        strcat(tmpStr, "Sub Group \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
 
     ListIterator iter5 = createIterator(tmpGroup->otherAttributes);
 	while ((elem = nextElement(&iter5)) != NULL){

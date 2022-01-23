@@ -20,7 +20,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList);
 List* getPathsFromNode(xmlNode * a_node, List* pathsList);
 List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList);
 
-
-Rectangle *  getRectFromSingleNode(xmlNode * a_node);
+Rectangle * getRectFromSingleNode(xmlNode * a_node);
 Circle * getCircleFromSingleNode(xmlNode * a_node);
 Path * getPathFromSingleNode(xmlNode * a_node);
+Group * getGroupFromSingleNode(xmlNode * a_node);

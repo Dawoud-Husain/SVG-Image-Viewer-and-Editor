@@ -199,7 +199,70 @@ Path * getPathFromSingleNode(xmlNode * a_node){
     return tmpPath;
 }
 
+Group * getGroupFromSingleNode(xmlNode * a_node){
 
+    xmlNode *cur_node = a_node;
+    cur_node = cur_node->children;
+
+    xmlAttr *attr;
+    
+    Group * tmpGroup = (Group*)malloc(sizeof(Group));
+
+    
+    List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
+    List* rectsList = initializeList(&rectangleToString, &deleteRectangle, &compareRectangles);
+    List* circlesList = initializeList(&circleToString, &deleteCircle, &compareCircles);
+    List* pathsList = initializeList(&pathToString, &deletePath, &comparePaths);
+    List* subGroupList = initializeList(&groupToString, &deleteGroup, &compareGroups);
+
+    for (cur_node =  cur_node->next; cur_node->next != NULL; cur_node = cur_node->next){
+
+           if(strcmp((char *)(cur_node->name), "g") == 0){
+                // printf("!!!!!!!!!!!!!!!!!!dsa!!!!!!!!!!!!!!!!!!!1\n\n\n");
+                Group * tmpGroup = getGroupFromSingleNode(cur_node);
+                insertBack(subGroupList, (void*)tmpGroup);
+            }
+
+        if(strcmp((char *)(cur_node->name), "rectangle") == 0){
+            Rectangle * tmpRectangle = getRectFromSingleNode(cur_node);
+            insertBack(rectsList, (void*)tmpRectangle);
+        }
+
+        else if(strcmp((char *)(cur_node->name), "circle") == 0){
+            Circle * tmpCircle = getCircleFromSingleNode(cur_node);
+            insertBack(circlesList, (void*)tmpCircle);
+        }
+
+        else if(strcmp((char *)(cur_node->name), "path") == 0){
+            Path * tmpPath = getPathFromSingleNode(cur_node);
+            insertBack(pathsList, (void*)tmpPath);
+        }
+
+        //Other Acctributes
+        else{
+            for (attr = cur_node->properties; attr != NULL; attr = attr->next){
+                xmlNode *value = attr->children;
+                char *attrName = (char *)attr->name;
+                char *cont = (char *)(value->content);
+                Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+                tmpAttribute->name = attrName;
+                char valueArray[strlen(cont) + 1];
+                strcpy(valueArray, cont);
+                strcpy(tmpAttribute->value,valueArray);        
+                insertBack(attributeList, (void*)tmpAttribute);
+            }
+        }   
+            
+    }
+
+    tmpGroup->rectangles = rectsList;
+    tmpGroup->circles = circlesList;
+    tmpGroup->paths = pathsList;
+    tmpGroup->groups = subGroupList;
+    tmpGroup->otherAttributes = attributeList;
+
+    return tmpGroup;
+}
 
 List* getRectsFromNode(xmlNode * a_node, List* rectsList){
     
@@ -353,8 +416,6 @@ List* getCirclesFromNode(xmlNode * a_node, List * circlesList){
 List* getPathsFromNode(xmlNode * a_node, List* pathsList){
     xmlNode *cur_node = NULL;
 
-    
-
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
         if (cur_node->type == XML_ELEMENT_NODE) {
 
@@ -420,28 +481,18 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
                 cur_node = cur_node->next;
             }
 
-
             if(strcmp((char *)(cur_node->name), "svg") == 0){
                 xmlAttr *attr;
-                   
-                 //List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
-                 
+                         
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
                     xmlNode *value = attr->children;
                     char *attrName = (char *)attr->name;
                     char *cont = (char *)(value->content);
-
                     Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-
                     tmpAttribute->name = attrName;
-
                     char valueArray[strlen(cont) + 1];
                     strcpy(valueArray, cont);
-
-                    strcpy(tmpAttribute->value,valueArray);
-
-                    // printf("%s %s", tmpAttribute->name, tmpAttribute->value);
-                        
+                    strcpy(tmpAttribute->value,valueArray);                        
                     insertBack(attributeList, (void*)tmpAttribute);
                 }
             }
@@ -459,7 +510,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
         if (cur_node->type == XML_ELEMENT_NODE) {
             if(strcmp((char *)(cur_node->name), "g") == 0){
-
+            
                 xmlAttr *attr;
 
                 Group * tmpGroup = (Group*)malloc(sizeof(Group));
@@ -471,7 +522,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                 List* subGroupList = initializeList(&groupToString, &deleteGroup, &compareGroups);
 
                 cur_node = cur_node->children;
-            
+                
                 for (cur_node =  cur_node->next; cur_node->next != NULL; cur_node = cur_node->next){
                 
                     if(strcmp((char *)(cur_node->name), "rectangle") == 0){
@@ -490,7 +541,9 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                     }
 
                     else if(strcmp((char *)(cur_node->name), "g") == 0){
-                        getGroupsFromNode(cur_node, subGroupList);
+                        // printf("!!!!!!!!!!!!!!!!!!dsa!!!!!!!!!!!!!!!!!!!1\n\n\n");
+                        Group * tmpGroup = getGroupFromSingleNode(cur_node);
+                        insertBack(subGroupList, (void*)tmpGroup);
                     }
 
                     //Other Acctributes
@@ -503,14 +556,9 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                             Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
 
                             tmpAttribute->name = attrName;
-
                             char valueArray[strlen(cont) + 1];
                             strcpy(valueArray, cont);
-
-                            strcpy(tmpAttribute->value,valueArray);
-
-                            // printf("%s %s", tmpAttribute->name, tmpAttribute->value);
-                                
+                            strcpy(tmpAttribute->value,valueArray);      
                             insertBack(attributeList, (void*)tmpAttribute);
                         }
                     }
@@ -545,11 +593,7 @@ void getTitle(xmlNode * a_node, char title[256]){
 
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
-            // printf("%s %s\n", cur_node->name, cur_node->content);
-            // printf("node type: Element, name: %s\n", cur_node->name);
             if(strcmp((char *)(cur_node->name), "title") == 0){
-                // printf("content: %s\n", cur_node->children->content);
-
                 if (cur_node->children->content != NULL && strcmp((char *)(cur_node->children->content), "") != 0){
                     strcat(title,(char *)(cur_node->children->content));
                 }
@@ -566,13 +610,8 @@ void getDescription(xmlNode * a_node, char description[256]){
 
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
-            // printf("%s %s\n", cur_node->name, cur_node->content);
-            // printf("node type: Element, name: %s\n", cur_node->name);
             if(strcmp((char *)(cur_node->name), "desc") == 0){
-                // printf("content: %s\n", cur_node->children->content);
-
                 if (cur_node->children->content != NULL){
-        
                     strcat(description, (char *)(cur_node->children->content)); 
                 }
             }

@@ -425,7 +425,10 @@ List* getPathsFromNode(xmlNode * a_node, List* pathsList){
 
             if(strcmp((char *)(cur_node->name), "path") == 0){
                 xmlAttr *attr;
-                Path * tmpPath = (Path*)malloc(sizeof(Path)+10000);
+                // Path * tmpPath = (Path*)malloc(sizeof(Path)+10000);
+
+                Path * tmpPath = (Path*) calloc(1, sizeof(Path)+10000);
+               
                 List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
                  
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
@@ -595,7 +598,7 @@ void getTitle(xmlNode * a_node, char title[256]){
         if (cur_node->type == XML_ELEMENT_NODE) {
             if(strcmp((char *)(cur_node->name), "title") == 0){
                 if (cur_node->children->content != NULL && strcmp((char *)(cur_node->children->content), "") != 0){
-                    strcat(title,(char *)(cur_node->children->content));
+                    strcpy(title,(char *)(cur_node->children->content));
                 }
             }
         }
@@ -612,7 +615,7 @@ void getDescription(xmlNode * a_node, char description[256]){
         if (cur_node->type == XML_ELEMENT_NODE) {
             if(strcmp((char *)(cur_node->name), "desc") == 0){
                 if (cur_node->children->content != NULL){
-                    strcat(description, (char *)(cur_node->children->content)); 
+                    strcpy(description, (char *)(cur_node->children->content)); 
                 }
             }
         }

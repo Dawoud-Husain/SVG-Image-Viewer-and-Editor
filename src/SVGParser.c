@@ -97,6 +97,7 @@ char* SVGToString(const SVG* img){
     char *OutputString;
     
     OutputString = (char*) malloc(sizeof(char) * 10000024);
+    strcpy(OutputString, "");
 
     // char *OutputString = calloc(sizeof(char) * 1000024, 0);
 

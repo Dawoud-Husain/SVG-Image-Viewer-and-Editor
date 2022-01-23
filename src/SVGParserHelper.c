@@ -15,7 +15,6 @@ void deleteAttribute( void* data){
 	}
 	
 	tmpAttribute = (Attribute*)data;
-    // free(tmpAttribute->name);
 	free(tmpAttribute);
 }
 
@@ -33,9 +32,9 @@ char* attributeToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
-	
+	strcpy(tmpStr, "");
 
-	sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value); //Problem?
+	sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value);
 
 	return tmpStr;
 }
@@ -53,16 +52,10 @@ void deleteGroup(void* data){
 	
 	tmpGroup = (Group*)data;
 	
-	//free(tmpGroup->otherAttributes);
-
-	
     freeList(tmpGroup->rectangles);	
-	
     freeList(tmpGroup->circles);	
-	
     freeList(tmpGroup->paths);	
 	freeList(tmpGroup->groups);	
-
     freeList(tmpGroup->otherAttributes);	
 	free(tmpGroup);
 }
@@ -82,6 +75,7 @@ char* groupToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 1000000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
+	 strcpy(tmpStr, "");
 
 	// sprintf(tmpStr, "x: %f y:%f width:%f height:%f unit: %s\n", tmpGroup->x, tmpGroup->y, tmpGroup->width, tmpGroup->height, tmpGroup->units);
 
@@ -182,6 +176,7 @@ char* rectangleToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
+	strcpy(tmpStr, "");
 
 	sprintf(tmpStr, "x: %f y:%f width:%f height:%f unit: %s\n", tmpRectangle->x, tmpRectangle->y, tmpRectangle->width, tmpRectangle->height, tmpRectangle->units);
 
@@ -233,6 +228,7 @@ char* circleToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
+	strcpy(tmpStr, "");
 
 	sprintf(tmpStr, "cx: %f cy:%f r:%f unit: %s\n", tmpCircle->cx, tmpCircle->cy, tmpCircle->r, tmpCircle->units);
 
@@ -285,6 +281,8 @@ char* pathToString(void* data){
     len = 100000;
 	tmpStr = (char*)malloc(sizeof(char)*len);
 
+	strcpy(tmpStr, "");
+	
 	sprintf(tmpStr, "data: %s\n",  tmpPath->data);
 
     void* elem;

@@ -45,12 +45,78 @@ int compareAttributes(const void *first, const void *second){
 }
 
 void deleteGroup(void* data){
-    return;
+    Group* tmpGroup;
+	
+	if (data == NULL){
+		return;
+	}
+	
+	tmpGroup = (Group*)data;
+	
+	//free(tmpGroup->otherAttributes);
+
+    freeList(tmpGroup->otherAttributes);	
+	free(tmpGroup);
 }
+
 char* groupToString(void* data){
-     char* groupToString = "";
-    return groupToString;
+    
+	 char* tmpStr;
+	Group* tmpGroup;
+	int len;
+	
+	if (data == NULL){
+		return NULL;
+	}
+	
+	tmpGroup = (Group*)data;
+		
+	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
+    len = 100000;
+	tmpStr = (char*)malloc(sizeof(char)*len);
+
+	// sprintf(tmpStr, "x: %f y:%f width:%f height:%f unit: %s\n", tmpGroup->x, tmpGroup->y, tmpGroup->width, tmpGroup->height, tmpGroup->units);
+
+    void* elem;
+
+
+	ListIterator iter = createIterator(tmpPath->otherPaths);
+	while ((elem = nextElement(&iter)) != NULL){
+		Path* tmpPath = (Path*)elem;
+		char* str = attributeToString(tmpPath);
+
+        strcat(tmpStr, "Path Path\n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+	
+	ListIterator iter = createIterator(tmpGroup->otherGroups);
+	while ((elem = nextElement(&iter)) != NULL){
+		Group* tmpGroup = (Group*)elem;
+		char* str = attributeToString(tmpGroup);
+
+        strcat(tmpStr, "Group Group\n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+
+    ListIterator iter = createIterator(tmpGroup->otherAttributes);
+	while ((elem = nextElement(&iter)) != NULL){
+		Attribute* tmpAttribute = (Attribute*)elem;
+		char* str = attributeToString(tmpAttribute);
+
+        strcat(tmpStr, "Group Attribute\n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+		free(str);
+	}
+
+	return tmpStr;
+
 }
+
 int compareGroups(const void *first, const void *second){
     return 0;
 }

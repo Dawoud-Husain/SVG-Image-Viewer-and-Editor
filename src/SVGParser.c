@@ -77,7 +77,9 @@ SVG* createSVG(const char* fileName){
 
 
     // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
-    // createdSVG->groups = getPathsFromNode(root_element);
+    List* groupList = initializeList(&groupToString, &deleteGroup, &compareGroups);
+    getGroupsFromNode(root_element, groupList);
+    createdSVG->groups = groupList; 
    
     xmlFreeDoc(doc);
     xmlCleanupParser();
@@ -172,6 +174,19 @@ char* SVGToString(const SVG* img){
 		free(str);
 	}
 
+
+    void* groupElement;
+    ListIterator groupIter = createIterator(img->groups);
+	while ((groupElement = nextElement(&groupIter)) != NULL){
+		Group* tmpGroup = (Group*)groupElement;
+		char* str = groupToString(tmpGroup);
+        strcat(OutputString, "Group\n");
+        strcat(OutputString,str);
+        strcat(OutputString, "\n\n");
+		free(str);
+	}
+
+
     return OutputString;
 }
 
@@ -181,6 +196,7 @@ void deleteSVG(SVG* img){
     freeList(img->rectangles);	
     freeList(img->circles);	
     freeList(img->paths);
+    freeList(img->groups);
     free(img);
 }
 

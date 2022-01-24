@@ -53,7 +53,7 @@ Rectangle * getRectFromSingleNode(xmlNode * a_node){
     xmlAttr *attr;
 
     cur_node = a_node;
-    Rectangle * tmpRectangle = (Rectangle*)malloc(sizeof(Rectangle));
+    Rectangle * tmpRectangle = (Rectangle*)calloc(1,sizeof(Rectangle) + 100000);
     List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
                             
     for (attr = cur_node->properties; attr != NULL; attr = attr->next){
@@ -93,9 +93,12 @@ Rectangle * getRectFromSingleNode(xmlNode * a_node){
         }   
 
         else{
-            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
 
-            tmpAttribute->name = attrName;
+            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+            //tmpAttribute->name = attrName;
+
+            strcpy(tmpAttribute->name, attrName);
 
             char valueArray[strlen(cont) + 1];
             strcpy(valueArray, cont);
@@ -115,7 +118,7 @@ Circle * getCircleFromSingleNode(xmlNode * a_node){
       xmlNode *cur_node = a_node;
       xmlAttr *attr;
 
-      Circle * tmpCircle = (Circle*)malloc(sizeof(Circle));
+      Circle * tmpCircle = (Circle*)calloc(1,sizeof(Circle) + 100000);
       List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
     for (attr = cur_node->properties; attr != NULL; attr = attr->next){
         xmlNode *value = attr->children;
@@ -148,8 +151,11 @@ Circle * getCircleFromSingleNode(xmlNode * a_node){
         }
 
         else{
-            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-            tmpAttribute->name = attrName;
+            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
+
+            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+            //tmpAttribute->name = attrName;
+            strcpy(tmpAttribute->name, attrName);
             char valueArray[strlen(cont) + 1];
             strcpy(valueArray, cont);
             strcpy(tmpAttribute->value,valueArray);
@@ -186,8 +192,11 @@ Path * getPathFromSingleNode(xmlNode * a_node){
         }
 
         else{
-            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-            tmpAttribute->name = attrName;
+            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
+
+            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+            //tmpAttribute->name = attrName;
+            strcpy(tmpAttribute->name, attrName);
             char valueArray[strlen(cont) + 1];
             strcpy(valueArray, cont);
             strcpy(tmpAttribute->value,valueArray);
@@ -206,7 +215,7 @@ Group * getGroupFromSingleNode(xmlNode * a_node){
 
     xmlAttr *attr;
     
-    Group * tmpGroup = (Group*)malloc(sizeof(Group));
+    Group * tmpGroup = (Group*)malloc(sizeof(Group) + 100000);
 
     
     List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
@@ -244,8 +253,11 @@ Group * getGroupFromSingleNode(xmlNode * a_node){
                 xmlNode *value = attr->children;
                 char *attrName = (char *)attr->name;
                 char *cont = (char *)(value->content);
-                Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-                tmpAttribute->name = attrName;
+                Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
+
+                tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                //tmpAttribute->name = attrName;
+                strcpy(tmpAttribute->name, attrName);
                 char valueArray[strlen(cont) + 1];
                 strcpy(valueArray, cont);
                 strcpy(tmpAttribute->value,valueArray);        
@@ -278,7 +290,7 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
 
             if(strcmp((char *)(cur_node->name), "rect") == 0){
                 xmlAttr *attr;
-                 Rectangle * tmpRectangle = (Rectangle*)malloc(sizeof(Rectangle));
+                 Rectangle * tmpRectangle = (Rectangle*)calloc(1,sizeof(Rectangle) + 100000);
                  List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
                  
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
@@ -318,9 +330,11 @@ List* getRectsFromNode(xmlNode * a_node, List* rectsList){
                         }   
 
                         else{
-                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-
-                            tmpAttribute->name = attrName;
+                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
+                            
+                            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                            // tmpAttribute->name = attrName;
+                            strcpy(tmpAttribute->name, attrName);
 
                             char valueArray[strlen(cont) + 1];
                             strcpy(valueArray, cont);
@@ -355,7 +369,7 @@ List* getCirclesFromNode(xmlNode * a_node, List * circlesList){
 
             if(strcmp((char *)(cur_node->name), "circle") == 0){
                 xmlAttr *attr;
-                 Circle * tmpCircle = (Circle*)malloc(sizeof(Circle));
+                 Circle * tmpCircle = (Circle*)calloc(1, sizeof(Circle) + 100000);
                  List* attributeList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
                  
                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
@@ -389,9 +403,11 @@ List* getCirclesFromNode(xmlNode * a_node, List * circlesList){
                         }
 
                         else{
-                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
 
-                            tmpAttribute->name = attrName;
+                            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                            // tmpAttribute->name = attrName;
+                            strcpy(tmpAttribute->name, attrName);
 
                             char valueArray[strlen(cont) + 1];
                             strcpy(valueArray, cont);
@@ -448,15 +464,17 @@ List* getPathsFromNode(xmlNode * a_node, List* pathsList){
                         }
 
                         else{
-                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
+                            Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
 
-                            tmpAttribute->name = attrName;
-
-                            char valueArray[strlen(cont) + 1];
+                            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                            // tmpAttribute->name = attrName;
+                            strcpy(tmpAttribute->name, attrName);
+                            char valueArray[strlen(cont) + 1] ;
                             strcpy(valueArray, cont);
-
-                            strcpy(tmpAttribute->value,valueArray);
-                             
+                            strcpy(tmpAttribute->value, "");
+                            for(int i = 0; i < strlen(valueArray); i++){
+                                tmpAttribute->value[i] = valueArray[i];
+                            }         
                             insertBack(attributeList, (void*)tmpAttribute);
                         }
                   }
@@ -491,10 +509,13 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
                     xmlNode *value = attr->children;
                     char *attrName = (char *)attr->name;
                     char *cont = (char *)(value->content);
-                    Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-                    tmpAttribute->name = attrName;
+                    Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute) + 100000);
+                    tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                    strcpy(tmpAttribute->name, attrName);
+                    // tmpAttribute->name = attrName;
                     char valueArray[strlen(cont) + 1];
-                    strcpy(valueArray, cont);
+                    // strcpy(valueArray, cont);
+                    sprintf(valueArray, "%s", cont);
                     strcpy(tmpAttribute->value,valueArray);                        
                     insertBack(attributeList, (void*)tmpAttribute);
                 }
@@ -557,9 +578,10 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                             char *cont = (char *)(value->content);
 
                             Attribute * tmpAttribute = (Attribute*)malloc(sizeof(Attribute));
-
-                            tmpAttribute->name = attrName;
-                            char valueArray[strlen(cont) + 1];
+                            tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
+                            strcpy(tmpAttribute->name, attrName);
+                            // tmpAttribute->name = attrName;
+                            char valueArray[strlen(cont) + 100];
                             strcpy(valueArray, cont);
                             strcpy(tmpAttribute->value,valueArray);      
                             insertBack(attributeList, (void*)tmpAttribute);

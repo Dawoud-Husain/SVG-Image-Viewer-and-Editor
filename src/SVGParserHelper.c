@@ -30,11 +30,21 @@ char* attributeToString(void* data){
 	tmpAttribute = (Attribute*)data;
 		
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
-    len = 100000;
-	tmpStr = (char*)malloc(sizeof(char)*len);
-	strcpy(tmpStr, "");
+    len = 1000000;
+	tmpStr = (char*)malloc(sizeof(tmpAttribute->name) + sizeof((char*)(tmpAttribute->value)) + 10000);
+	//tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
 
-	sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value);
+	strcpy(tmpStr, "Name: ");
+	strcat(tmpStr, (tmpAttribute->name));
+	
+	
+	strcat(tmpStr, " || Value: ");
+	strcat(tmpStr, (tmpAttribute->value));
+
+
+
+	// tmpStr = (char*)malloc(sizeof(char)*len);
+	// sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value);
 
 	return tmpStr;
 }
@@ -282,8 +292,12 @@ char* pathToString(void* data){
 	tmpStr = (char*)malloc(sizeof(char)*len);
 
 	strcpy(tmpStr, "");
+
+	strcat(tmpStr, "data: ");
+	strcat(tmpStr, tmpPath->data);
+	strcat(tmpStr, "\n");
 	
-	sprintf(tmpStr, "data: %s\n",  tmpPath->data);
+	//sprintf(tmpStr, "data: %s\n",  tmpPath->data);
 
     void* elem;
 

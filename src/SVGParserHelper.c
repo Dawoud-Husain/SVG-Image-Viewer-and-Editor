@@ -15,6 +15,7 @@ void deleteAttribute( void* data){
 	}
 	
 	tmpAttribute = (Attribute*)data;
+	free(tmpAttribute->name);
 	free(tmpAttribute);
 }
 
@@ -32,16 +33,12 @@ char* attributeToString(void* data){
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
     len = 1000000;
 	tmpStr = (char*)malloc(sizeof(tmpAttribute->name) + sizeof((char*)(tmpAttribute->value)) + 10000);
-	//tmpAttribute->name = (char*)malloc(sizeof(char)*10000);
 
 	strcpy(tmpStr, "Name: ");
 	strcat(tmpStr, (tmpAttribute->name));
 	
-	
 	strcat(tmpStr, " || Value: ");
 	strcat(tmpStr, (tmpAttribute->value));
-
-
 
 	// tmpStr = (char*)malloc(sizeof(char)*len);
 	// sprintf(tmpStr, "Name: %s Value:%s", tmpAttribute->name, tmpAttribute->value);

@@ -22,7 +22,7 @@ void deleteAttribute( void* data){
 char* attributeToString(void* data){
     char* tmpStr;
 	Attribute* tmpAttribute;
-	int len;
+	// int len = = 1000000;
 	
 	if (data == NULL){
 		return NULL;
@@ -31,7 +31,7 @@ char* attributeToString(void* data){
 	tmpAttribute = (Attribute*)data;
 		
 	//len = strlen(tmpName->firstName)+strlen(tmpName->lastName)+28;
-    len = 1000000;
+    
 	tmpStr = (char*)malloc(sizeof(tmpAttribute->name) + sizeof((char*)(tmpAttribute->value)) + 10000);
 
 	strcpy(tmpStr, "Name: ");
@@ -291,7 +291,17 @@ char* pathToString(void* data){
 	strcpy(tmpStr, "");
 
 	strcat(tmpStr, "data: ");
-	strcat(tmpStr, tmpPath->data);
+	
+	// char*tmpData = malloc(sizeof(char) * 100000);
+	// strcpy(tmpData, tmpPath->data);
+	// strcat(tmpStr, tmpData);
+	strcat(tmpStr,  (tmpPath->data));
+	// for(int i =0; strcmp(&(tmpPath->data[i]), "\0") != 0; i++){
+	// 	// strcat(tmpStr, (char)(tmpPath->data[i]));
+	// 	strncat(tmpStr, &(tmpPath->data[i]), 1);
+	// }
+	// strncat(tmpStr,  tmpPath->data, sizeof(tmpPath->data));
+
 	strcat(tmpStr, "\n");
 	
 	//sprintf(tmpStr, "data: %s\n",  tmpPath->data);

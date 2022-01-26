@@ -30,4 +30,12 @@ Circle * getCircleFromSingleNode(xmlNode * a_node);
 Path * getPathFromSingleNode(xmlNode * a_node);
 Group * getGroupFromSingleNode(xmlNode * a_node);
 
+
+
+
+// Module 2 Helper Functions
+
+void getRectsFromAllGroups(List* rectsList, List*groupsList);
+void getCirclesFromAllGroups(List* circlesList, List*groupsList);
+
 #endif

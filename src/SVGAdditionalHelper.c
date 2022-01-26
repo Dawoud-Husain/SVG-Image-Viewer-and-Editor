@@ -11,6 +11,50 @@
 
 
 
+
+void getRectsFromAllGroups(List* rectsList, List*groupsList){
+
+    ListIterator iter = createIterator(groupsList);
+    void*groupElement;
+    while ((groupElement = nextElement(&iter)) != NULL){
+        Group* tmpGroup = (Group*)groupElement;
+        
+        ListIterator rectIter = createIterator(tmpGroup->rectangles);
+        void* rectangleElement;
+        while ((rectangleElement = nextElement(&rectIter)) != NULL){
+            Rectangle* tmpRectangle = (Rectangle*)rectangleElement;
+            insertBack(rectsList, (void*)tmpRectangle);
+        }
+
+        if (getLength(tmpGroup->groups) > 0){
+            getRectsFromAllGroups(rectsList, tmpGroup->groups);
+        }
+    }
+}
+
+
+void getCirclesFromAllGroups(List* circlesList, List*groupsList){
+
+    ListIterator iter = createIterator(groupsList);
+    void*groupElement;
+    while ((groupElement = nextElement(&iter)) != NULL){
+        Group* tmpGroup = (Group*)groupElement;
+        
+        ListIterator circleIter = createIterator(tmpGroup->circles);
+        void* circleElement;
+        while ((circleElement = nextElement(&circleIter)) != NULL){
+            Circle* tmpCircle = (Circle*)circleElement;
+            insertBack(circlesList, (void*)tmpCircle);
+        }
+
+        if (getLength(tmpGroup->groups) > 0){
+            getCirclesFromAllGroups(circlesList, tmpGroup->groups);
+        }
+    }
+}
+
+
+
 int validateXML(const char *filename) {
     xmlParserCtxtPtr ctxt; /* the parser context */
     xmlDocPtr doc; /* the resulting document tree */
@@ -235,7 +279,7 @@ Group * getGroupFromSingleNode(xmlNode * a_node){
                 insertBack(subGroupList, (void*)tmpGroup);
             }
 
-        if(strcmp((char *)(cur_node->name), "rectangle") == 0){
+        else if(strcmp((char *)(cur_node->name), "rectangle") == 0){
             Rectangle * tmpRectangle = getRectFromSingleNode(cur_node);
             insertBack(rectsList, (void*)tmpRectangle);
         }
@@ -582,7 +626,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                     //Other Acctributes
                     else{
                         for (attr = cur_node->properties; attr != NULL; attr = attr->next){
-                            // xmlNode *value = attr->children;
+                            xmlNode *value = attr->children;
                             char *attrName = (char *)attr->name;
                             char *cont = (char *)(value->content);
 

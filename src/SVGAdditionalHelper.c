@@ -279,7 +279,7 @@ Group * getGroupFromSingleNode(xmlNode * a_node){
                 insertBack(subGroupList, (void*)tmpGroup);
             }
 
-        else if(strcmp((char *)(cur_node->name), "rectangle") == 0){
+        else if(strcmp((char *)(cur_node->name), "rect") == 0){
             Rectangle * tmpRectangle = getRectFromSingleNode(cur_node);
             insertBack(rectsList, (void*)tmpRectangle);
         }
@@ -483,6 +483,7 @@ List* getPathsFromNode(xmlNode * a_node, List* pathsList){
     xmlNode *cur_node = NULL;
 
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
+        
         if (cur_node->type == XML_ELEMENT_NODE) {
 
             if(strcmp((char *)(cur_node->name), "g") == 0){
@@ -584,11 +585,14 @@ List* getOtherAttributesFromNode(xmlNode * a_node, List* attributeList){
 
 List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
     xmlNode *cur_node = NULL;
+    xmlNode *nextNode = a_node;
     
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next){
         if (cur_node->type == XML_ELEMENT_NODE) {
+            // printf("%s ", (char *)(cur_node->name));
             if(strcmp((char *)(cur_node->name), "g") == 0){
-            
+                nextNode = cur_node->next;
+
                 xmlAttr *attr;
 
                 Group * tmpGroup = (Group*)calloc(sizeof(Group), 1);
@@ -603,7 +607,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                 
                 for (cur_node =  cur_node->next; cur_node->next != NULL; cur_node = cur_node->next){
                 
-                    if(strcmp((char *)(cur_node->name), "rectangle") == 0){
+                    if(strcmp((char *)(cur_node->name), "rect") == 0){
                         Rectangle * tmpRectangle = getRectFromSingleNode(cur_node);
                         insertBack(rectsList, (void*)tmpRectangle);
                     }
@@ -641,20 +645,22 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                             insertBack(attributeList, (void*)tmpAttribute);
                         }
                     }
-                        
                   }
 
-                  tmpGroup->rectangles = rectsList;
-                  tmpGroup->circles = circlesList;
-                  tmpGroup->paths = pathsList;
-                  tmpGroup->groups = subGroupList;
-                  tmpGroup->otherAttributes = attributeList;
+                tmpGroup->rectangles = rectsList;
+                tmpGroup->circles = circlesList;
+                tmpGroup->paths = pathsList;
+                tmpGroup->groups = subGroupList;
+                tmpGroup->otherAttributes = attributeList;
 
-                  insertBack(groupsList, (void*)tmpGroup);
+                insertBack(groupsList, (void*)tmpGroup);
+
+                cur_node = nextNode;
+                //getGroupsFromNode(nextNode->next, groupsList);
             }
         }
 
-        getGroupsFromNode(cur_node->children, groupsList);
+        getGroupsFromNode(nextNode->children, groupsList);
     }
 
     return groupsList;
@@ -670,7 +676,6 @@ void  getNameSpace(xmlNode * a_node, char namespace[256]){
 void getTitle(xmlNode * a_node, char title[256]){
 
     xmlNode *cur_node = NULL;
-    strcpy(title, "");
 
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {
@@ -678,7 +683,7 @@ void getTitle(xmlNode * a_node, char title[256]){
                 if (cur_node->children->content != NULL && strcmp((char *)(cur_node->children->content), "") != 0){
                     strcpy(title,(char *)(cur_node->children->content));
                 }
-            }
+            } 
         }
         getTitle(cur_node->children, title );
     }
@@ -688,7 +693,13 @@ void getTitle(xmlNode * a_node, char title[256]){
 
 void getDescription(xmlNode * a_node, char description[256]){
     xmlNode *cur_node = NULL;
-    strcpy(description, "");
+    // strcpy(description, "");
+
+    
+   if(description[0] == '\0'){
+         strcpy(description, "");
+    }
+   
 
     for (cur_node = a_node; cur_node != NULL; cur_node = cur_node->next) {
         if (cur_node->type == XML_ELEMENT_NODE) {

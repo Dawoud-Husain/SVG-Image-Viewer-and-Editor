@@ -39,16 +39,21 @@ SVG* createSVG(const char* fileName){
     root_element = xmlDocGetRootElement(doc);
 
     SVG * createdSVG = malloc(sizeof(SVG) + 100000);
+
+    
     
     //Namespace associated with our SVG struct.  May be not be empty.  While a real SVG struct might have
     //multiple namespaces associated with it, we will assume there is only one
+    strcpy(createdSVG->namespace, "");
     getNameSpace(root_element, createdSVG->namespace);
     
     //Title of our SVG struct - from the optional <title> element.  May be empty.
+     strcpy(createdSVG->title, "");
     getTitle(root_element, createdSVG->title);
 
 
     //Decription of our SVG struct - from the optional <desc> element.  May be empty.
+    strcpy(createdSVG->description, "");
     getDescription(root_element, createdSVG->description);
 
 

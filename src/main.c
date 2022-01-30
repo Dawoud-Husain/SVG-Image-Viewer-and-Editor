@@ -24,38 +24,41 @@ int main(int argc, char **argv)
    free(string);
 
 
-//     char tmpStr[1000000];
-//     void* elem;
-//     List * rectsList = getRects(mySVG);
-//     ListIterator iter1 = createIterator(rectsList);
+    char tmpStr[1000000];
 
-//     strcat(tmpStr, "**************************************Rectangles******************************* \n");
-//     while ((elem = nextElement(&iter1)) != NULL){
-//         Rectangle* tmpRectangle = (Rectangle*)elem;
-//         char* str = rectangleToString(tmpRectangle);
+    void* elem;
+    List * rectsList = getRects(mySVG);
+    ListIterator iter1 = createIterator(rectsList);
 
-//         strcat(tmpStr, "Rectangle \n");
-//         strcat(tmpStr,str);
-//         strcat(tmpStr, "\n");
-//         free(str);
-//     }
+    strcat(tmpStr, "**************************************Rectangles******************************* \n");
+    while ((elem = nextElement(&iter1)) != NULL){
+        Rectangle* tmpRectangle = (Rectangle*)elem;
+        char* str = rectangleToString(tmpRectangle);
+
+        strcat(tmpStr, "Rectangle \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+        free(str);
+    }
 
     
-//     strcat(tmpStr, "**************************************Circles******************************* \n");
-//     while ((elem = nextElement(&iter1)) != NULL){
-//         Circle* tmpCircle = (Circle*)elem;
-//         char* str = circleToString(tmpCircle);
+    void* elem2;
+    List * circlesList = getCircles(mySVG);
+    ListIterator iter2 = createIterator(circlesList);
 
-//         strcat(tmpStr, "Circle \n");
-//         strcat(tmpStr,str);
-//         strcat(tmpStr, "\n");
-//         free(str);
-//     }
+    strcat(tmpStr, "**************************************Circles******************************* \n");
+    while ((elem2 = nextElement(&iter2)) != NULL){
+        Circle* tmpCircle = (Circle*)elem2;
+        char* str = circleToString(tmpCircle);
 
+        strcat(tmpStr, "Circle \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+        free(str);
+    }
 
-
-//     printf("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\n");
-//     printf("%s", tmpStr);
+    printf("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||MODULE 2||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\n");
+    printf("%s\n\n", tmpStr);
 
 
    deleteSVG(mySVG);

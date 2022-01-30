@@ -10,8 +10,6 @@
 #include "LinkedListAPI.h"
 
 
-int validateXML(const char* fileName);
-
 void allocateFlexArray(char str[], char* src);
 
 void  getNameSpace(xmlNode * a_node, char namespace[256]);

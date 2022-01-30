@@ -103,7 +103,6 @@ char* groupToString(void* data){
 	while ((elem = nextElement(&iter2)) != NULL){
 		Circle* tmpCircle = (Circle*)elem;
 		char* str = circleToString(tmpCircle);
-
         strcat(tmpStr, "Circle \n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
@@ -114,9 +113,7 @@ char* groupToString(void* data){
 	ListIterator iter3 = createIterator(tmpGroup->paths);
 	while ((elem = nextElement(&iter3)) != NULL){
 		Path* tmpPath = (Path*)elem;
-		
 		char* str = pathToString(tmpPath);
-
         strcat(tmpStr, "Path \n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
@@ -128,7 +125,6 @@ char* groupToString(void* data){
 	while ((elem = nextElement(&iter4)) != NULL){
 		Group* tmpGroup = (Group*)elem;
 		char* str = groupToString(tmpGroup);
-
         strcat(tmpStr, "Sub Group \n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
@@ -139,7 +135,6 @@ char* groupToString(void* data){
 	while ((elem = nextElement(&iter5)) != NULL){
 		Attribute* tmpAttribute = (Attribute*)elem;
 		char* str = attributeToString(tmpAttribute);
-
         strcat(tmpStr, "Group Attribute\n");
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");

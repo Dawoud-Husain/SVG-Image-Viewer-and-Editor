@@ -18,7 +18,6 @@ SVG* createSVG(const char* fileName){
     // Parsing can fail for a number of reasons, but libxml hides them from us. The xmlReadFile function will
     // simply return NULL instead of an XML doc if the file is invalid for any reason.
 
-
     // if(validateXML(fileName) == -1){
     //     printf("invalid\n");
     //     return NULL;
@@ -32,7 +31,9 @@ SVG* createSVG(const char* fileName){
     /*parse the file and get the DOM */
     doc = xmlReadFile(fileName, NULL, 0);
     if (doc == NULL) {
-        printf("error: could not parse file\n");
+        // printf("error: could not parse file\n");
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
         return NULL;
     }
 
@@ -60,14 +61,12 @@ SVG* createSVG(const char* fileName){
     //Additional SVG attributes - i.e. attributes of the svg XML element.  
     //All objects in the list will be of type Attribute.  It must not be NULL.  It may be empty.  
     //Do not put the namespace here, since it already has its own field
-
     List* acctsList = initializeList(&attributeToString, &deleteAttribute, &compareAttributes);
     getOtherAttributesFromNode(root_element, acctsList);
     createdSVG->otherAttributes = acctsList; 
 
 
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
-
     List* rectsList = initializeList(&rectangleToString, &deleteRectangle, &compareRectangles);
     getRectsFromNode(root_element, rectsList);
     createdSVG->rectangles = rectsList; 
@@ -82,7 +81,6 @@ SVG* createSVG(const char* fileName){
     List* pathsList = initializeList(&pathToString, &deletePath, &comparePaths);
     getPathsFromNode(root_element, pathsList);
     createdSVG->paths = pathsList; 
-
 
     // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
     List* groupList = initializeList(&groupToString, &deleteGroup, &compareGroups);
@@ -107,8 +105,6 @@ char* SVGToString(const SVG* img){
     OutputString = (char*) malloc(sizeof(char) * 10000024);
     strcpy(OutputString, "");
 
-    // char *OutputString = calloc(sizeof(char) * 1000024, 0);
-
     strcat(OutputString, "\n\n");
     strcat(OutputString, "Namespace: \n");
     strcat(OutputString, img->namespace);
@@ -123,7 +119,6 @@ char* SVGToString(const SVG* img){
     strcat(OutputString, "*********************************************************** \n");
     
     // //Decription of our SVG struct - from the optional <desc> element.  May be empty.
-    
     strcat(OutputString, "Description: \n");
     strcat(OutputString,img->description);
     strcat(OutputString, "\n\n");
@@ -143,16 +138,7 @@ char* SVGToString(const SVG* img){
 	}
     strcat(OutputString, "*************************RECTANGLES********************************** \n");
 
-     
     // //All objects in the list will be of type Rectangle.  It must not be NULL.  It may be empty.
-    // strcat(SVGToString,rectangleToString(img->rectangles));
-    // //All objects in the list will be of type Circle.  It must not be NULL.  It may be empty.
-    // strcat(SVGToString,rectangleToString(img->circles));
-    // //All objects in the list will be of type Path.  It must not be NULL.  It may be empty.
-    // strcat(SVGToString,rectangleToString(img->paths));
-    // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
-    // strcat(SVGToString,rectangleToString(img->groups));
-
     void* rectangleElement;
     ListIterator iter = createIterator(img->rectangles);
 	while ((rectangleElement = nextElement(&iter)) != NULL){
@@ -165,6 +151,7 @@ char* SVGToString(const SVG* img){
 	}
     strcat(OutputString, "**************************CIRCLES********************************* \n");
 	
+    // //All objects in the list will be of type Circle.  It must not be NULL.  It may be empty.
     void* circleElement;
     ListIterator circleIter = createIterator(img->circles);
 	while ((circleElement = nextElement(&circleIter)) != NULL){
@@ -176,8 +163,8 @@ char* SVGToString(const SVG* img){
 		free(str);
 	}
 
+    // //All objects in the list will be of type Path.  It must not be NULL.  It may be empty.
     strcat(OutputString, "**************************PATHS********************************* \n");
-
     void* pathElement;
     ListIterator pathIter = createIterator(img->paths);
 	while ((pathElement = nextElement(&pathIter)) != NULL){
@@ -189,6 +176,7 @@ char* SVGToString(const SVG* img){
 		free(str);
 	}
 
+     // //All objects in the list will be of type Group.  It must not be NULL.  It may be empty.
     strcat(OutputString, "**************************GROUPS********************************* \n");
 
     void* groupElement;
@@ -209,6 +197,11 @@ char* SVGToString(const SVG* img){
 
 void deleteSVG(SVG* img){
     // This function deallocates the object, including all of its subcomponents.
+
+    if(img == NULL){
+        return;
+    }
+    
     freeList(img->otherAttributes);
     freeList(img->rectangles);	
     freeList(img->circles);	
@@ -260,15 +253,48 @@ List* getCircles(const SVG* img){
     return circlesList;
 }
 
-
-// Function that returns a list of all groups in the SVG struct. If there are none, it returns an empty list (not a NULL pointer)
-List* getGroups(const SVG* img){
-    return img ->groups;
-}
-
 //Function that returns a list of all paths in the SVG struct. If there are none, it returns an empty list (not a NULL pointer).
 List* getPaths(const SVG* img){
-    return img ->paths;
+
+    if(img == NULL){
+        return NULL;
+    }
+
+    List* pathsList = initializeList(&pathToString, &deletePath, &comparePaths);
+
+    void* pathElement;
+    ListIterator iter = createIterator(img->paths);
+    while ((pathElement = nextElement(&iter)) != NULL){
+        Path* tmpPath = (Path*)pathElement;
+        insertBack(pathsList, (void*)tmpPath);
+    }
+
+    getPathsFromAllGroups(pathsList, img->groups);
+
+    return pathsList;
+}
+
+// Function that returns a list of all groups in the SVG struct. If there are none, it returns an empty list (not a NULL pointer)
+
+
+List* getGroups(const SVG* img){
+
+    if(img == NULL){
+        return NULL;
+    }
+
+    List* groupsList = initializeList(&groupToString, &deleteGroup, &compareGroups);
+
+    void* groupElement;
+    ListIterator iter = createIterator(img->groups);
+    while ((groupElement = nextElement(&iter)) != NULL){
+        Group* tmpGroup = (Group*)groupElement;
+        insertBack(groupsList, (void*)tmpGroup);
+    }
+
+    getGroupsFromAllGroups(groupsList, img->groups);
+
+    return groupsList;
 }
 
 /* For the four "num..." functions below, you need to search the SVG struct for components that match the search 
@@ -287,6 +313,16 @@ List* getPaths(const SVG* img){
 
 // Function that returns the number of all rectangles with the specified area. Return 0 if no such rectangles are found, or if any of the arguments are invalid.
 int numRectsWithArea(const SVG* img, float area){
+    
+    List* rectsList = getRects(img);
+
+    compareRectanglesAreaFunc(rectsList, &area);
+    
+
+    if(rectsList == NULL){
+        return 0;
+    }
+
     return 0;
 }
 

@@ -9,9 +9,10 @@
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
 
-
+// Utility Functions
 void allocateFlexArray(char str[], char* src);
 
+// Module 1 Helper Functions
 void  getNameSpace(xmlNode * a_node, char namespace[256]);
 
 void getTitle(xmlNode * a_node, char title[256]);
@@ -29,11 +30,13 @@ Path * getPathFromSingleNode(xmlNode * a_node);
 Group * getGroupFromSingleNode(xmlNode * a_node);
 
 
-
-
 // Module 2 Helper Functions
-
 void getRectsFromAllGroups(List* rectsList, List*groupsList);
 void getCirclesFromAllGroups(List* circlesList, List*groupsList);
+void getPathsFromAllGroups(List* circlesList, List*groupsList);
+void getGroupsFromAllGroups(List* groupsList, List*groupsListInput);
+
+void* compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord);
+int compareRectanglesAreaFunc(const void* first,const void* second);
 
 #endif

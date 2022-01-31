@@ -57,6 +57,39 @@ int main(int argc, char **argv)
         free(str);
     }
 
+
+        
+    void* elem3;
+    List * pathsList = getPaths(mySVG);
+    ListIterator iter3 = createIterator(pathsList);
+
+    strcat(tmpStr, "**************************************Paths******************************* \n");
+    while ((elem3 = nextElement(&iter3)) != NULL){
+        Path* tmpPath = (Path*)elem3;
+        char* str = pathToString(tmpPath);
+
+        strcat(tmpStr, "Path \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+        free(str);
+    }
+
+    void* elem4;
+    List * groupsList = getGroups(mySVG);
+    ListIterator iter4 = createIterator(groupsList);
+
+    strcat(tmpStr, "**************************************Groups******************************* \n");
+    while ((elem4 = nextElement(&iter4)) != NULL){
+        Group* tmpGroup = (Group*)elem4;
+        char* str = groupToString(tmpGroup);
+
+        strcat(tmpStr, "Group \n");
+        strcat(tmpStr,str);
+        strcat(tmpStr, "\n");
+        free(str);
+    }
+
+
     printf("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||MODULE 2||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\n");
     printf("%s\n\n", tmpStr);
 

@@ -201,7 +201,7 @@ void deleteSVG(SVG* img){
     if(img == NULL){
         return;
     }
-    
+
     freeList(img->otherAttributes);
     freeList(img->rectangles);	
     freeList(img->circles);	
@@ -316,12 +316,15 @@ int numRectsWithArea(const SVG* img, float area){
     
     List* rectsList = getRects(img);
 
-    compareRectanglesAreaFunc(rectsList, &area);
-    
 
     if(rectsList == NULL){
         return 0;
     }
+
+    if(compare(rectsList, compareRectanglesAreaFunc, &area) == 1){
+        return 1;
+    }
+
 
     return 0;
 }

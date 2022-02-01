@@ -94,6 +94,11 @@ int main(int argc, char **argv)
     printf("%s\n\n", tmpStr);
 
 
+    printf("Num Rects with area 0 is: %d expected 0\n", numRectsWithArea(mySVG, 0.0));
+    printf("Num Rects with area 716404 is: %d expected 1\n", numRectsWithArea(mySVG, 716404.0));
+    
+
+
    deleteSVG(mySVG);
 
 

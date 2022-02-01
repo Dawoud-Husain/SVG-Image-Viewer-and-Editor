@@ -36,7 +36,11 @@ void getCirclesFromAllGroups(List* circlesList, List*groupsList);
 void getPathsFromAllGroups(List* circlesList, List*groupsList);
 void getGroupsFromAllGroups(List* groupsList, List*groupsListInput);
 
-void* compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord);
+int compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord);
 int compareRectanglesAreaFunc(const void* first,const void* second);
+int compareCirclesAreaFunc(const void* first,const void* second);
+int comparePathsDataFunc(const void* first,const void* second);
+int compareGroupsLenFunc(const void* first,const void* second);
+
 
 #endif

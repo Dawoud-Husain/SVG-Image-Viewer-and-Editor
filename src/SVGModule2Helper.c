@@ -6,33 +6,76 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+ 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
 
-
-void* compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord){
+int compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord){
 	if (customCompare == NULL)
-		return NULL;
+		return -1;
 
+    
 	ListIterator itr = createIterator(list);
 
 	void* data = nextElement(&itr);
 	while (data != NULL)
 	{
-		if (customCompare(data, searchRecord))
-			return data;
+        printf("!!!!!!!!!!!!!!!!!!\n\n");
+		if (customCompare(data, searchRecord) == 1){
+            return 1;
+        }
 
 		data = nextElement(&itr);
 	}
 
-	return NULL;
+  
+
+	return 0;
 }
 
 int compareRectanglesAreaFunc(const void* first,const void* second){
-	
+      
+    Rectangle* tmpRectangle = (Rectangle*)first;
+
+    float rectangleArea = tmpRectangle->width * tmpRectangle->height;
+    rectangleArea = ceil(rectangleArea);
+
+    float secondData = *((float *)second);
+    secondData = ceil(secondData);
+
+     printf("%f %f", rectangleArea, secondData);
+     
+    if(rectangleArea == secondData){
+        return 1;
+    }
+
 	return 0;
 }
+
+
+int compareRectanglesAreaFunc(const void* first,const void* second){
+       Circle* tmpCircle = (Circle*)first;
+
+    float cricleArea = tmpRectangle->width * tmpRectangle->height;
+    rectangleArea = ceil(rectangleArea);
+
+    float secondData = *((float *)second);
+    secondData = ceil(secondData);
+
+     printf("%f %f", rectangleArea, secondData);
+     
+    if(rectangleArea == secondData){
+        return 1;
+    }
+
+	return 0;
+}
+int compareCirclesAreaFunc(const void* first,const void* second);
+int comparePathsDataFunc(const void* first,const void* second);
+int compareGroupsLenFunc(const void* first,const void* second);
+
 
 
 void getRectsFromAllGroups(List* rectsList, List*groupsList){

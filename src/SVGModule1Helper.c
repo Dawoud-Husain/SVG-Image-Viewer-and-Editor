@@ -456,14 +456,7 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                 List* subGroupList = initializeList(&groupToString, &deleteGroup, &compareGroups);
 
 
-                nextNode = cur_node->next;
-
-                
-            
-                cur_node = cur_node->children;
-
-                if((strcmp((char *)(cur_node->name), "rect") != 0) && (strcmp((char *)(cur_node->name), "circle") != 0) && (strcmp((char *)(cur_node->name), "path") != 0) && (strcmp((char *)(cur_node->name), "g") != 0)){
-                    for (attr = cur_node->properties; attr != NULL; attr = attr->next){
+                 for (attr = cur_node->properties; attr != NULL; attr = attr->next){
                         xmlNode *value = attr->children;
                         char *attrName = (char *)attr->name;
                         char *cont = (char *)(value->content);
@@ -473,8 +466,26 @@ List* getGroupsFromNode(xmlNode * a_node, List* groupsList){
                         strcpy(tmpAttribute->name, attrName);
                         allocateFlexArray(cont, tmpAttribute->value); 
                         insertBack(attributeList, (void*)tmpAttribute);
-                    }
                 }
+                
+
+                
+                nextNode = cur_node->next;
+                cur_node = cur_node->children;
+
+                // if((strcmp((char *)(cur_node->name), "rect") != 0) && (strcmp((char *)(cur_node->name), "circle") != 0) && (strcmp((char *)(cur_node->name), "path") != 0) && (strcmp((char *)(cur_node->name), "g") != 0)){
+                //     for (attr = cur_node->properties; attr != NULL; attr = attr->next){
+                //         xmlNode *value = attr->children;
+                //         char *attrName = (char *)attr->name;
+                //         char *cont = (char *)(value->content);
+
+                //         Attribute * tmpAttribute = (Attribute*)calloc(sizeof(Attribute) + 100000,1);
+                //         tmpAttribute->name = (char*)calloc(sizeof(char)*10000, 1);
+                //         strcpy(tmpAttribute->name, attrName);
+                //         allocateFlexArray(cont, tmpAttribute->value); 
+                //         insertBack(attributeList, (void*)tmpAttribute);
+                //     }
+                // }
 
                 
                 for (cur_node =  cur_node->next; cur_node->next != NULL; cur_node = cur_node->next){
@@ -551,7 +562,7 @@ void getTitle(xmlNode * a_node, char title[256]){
                 }
             } 
         }
-        getTitle(cur_node->children, title );
+        getTitle(cur_node->children, title);
     }
 
     return;

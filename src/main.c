@@ -18,13 +18,13 @@ int main(int argc, char **argv)
 
    SVG* mySVG = createSVG(argv[1]);
 
-  
    char * string = SVGToString(mySVG);
    printf("%s", string);
    free(string);
 
 
     char tmpStr[1000000];
+    strcpy(tmpStr, "");
 
     void* elem;
     List * rectsList = getRects(mySVG);
@@ -39,7 +39,11 @@ int main(int argc, char **argv)
         strcat(tmpStr,str);
         strcat(tmpStr, "\n");
         free(str);
+       
     }
+
+     freeList(rectsList);
+
 
     
     void* elem2;
@@ -56,6 +60,8 @@ int main(int argc, char **argv)
         strcat(tmpStr, "\n");
         free(str);
     }
+
+    freeList(circlesList);
 
 
         
@@ -74,6 +80,8 @@ int main(int argc, char **argv)
         free(str);
     }
 
+    freeList(pathsList);
+
     void* elem4;
     List * groupsList = getGroups(mySVG);
     ListIterator iter4 = createIterator(groupsList);
@@ -88,6 +96,8 @@ int main(int argc, char **argv)
         strcat(tmpStr, "\n");
         free(str);
     }
+
+    freeList(groupsList);
 
 
     printf("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||MODULE 2||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\n");
@@ -107,10 +117,8 @@ int main(int argc, char **argv)
     printf("Num Groups with Len 2: %d expected 1\n", numGroupsWithLen(mySVG, 2));
 
     
-    printf("The number of attribtues is %d\n", numAttr(mySVG));
+    printf("The number of attribtues is %d expected 9\n", numAttr(mySVG));
   
-
-
 
    deleteSVG(mySVG);
     

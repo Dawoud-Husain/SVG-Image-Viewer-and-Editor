@@ -218,7 +218,7 @@ List* getRects(const SVG* img){
         return NULL;
     }
 
-    List* rectsList = initializeList(&rectangleToString, &deleteRectangle, &compareRectangles);
+    List* rectsList = initializeList(&rectangleToString, &dummyDelete, &compareRectangles);
 
     void* rectangleElement;
     ListIterator iter = createIterator(img->rectangles);
@@ -239,7 +239,7 @@ List* getCircles(const SVG* img){
         return NULL;
     }
 
-    List* circlesList = initializeList(&circleToString, &deleteCircle, &compareCircles);
+    List* circlesList = initializeList(&circleToString, &dummyDelete, &compareCircles);
 
     void* circleElement;
     ListIterator iter = createIterator(img->circles);
@@ -260,7 +260,7 @@ List* getPaths(const SVG* img){
         return NULL;
     }
 
-    List* pathsList = initializeList(&pathToString, &deletePath, &comparePaths);
+    List* pathsList = initializeList(&pathToString, &dummyDelete, &comparePaths);
 
     void* pathElement;
     ListIterator iter = createIterator(img->paths);
@@ -283,7 +283,7 @@ List* getGroups(const SVG* img){
         return NULL;
     }
 
-    List* groupsList = initializeList(&groupToString, &deleteGroup, &compareGroups);
+    List* groupsList = initializeList(&groupToString, &dummyDelete, &compareGroups);
 
     void* groupElement;
     ListIterator iter = createIterator(img->groups);
@@ -320,7 +320,8 @@ int numRectsWithArea(const SVG* img, float area){
     }
 
     int result = compare(rectsList, compareRectanglesAreaFunc, &area);
-    // freeList(rectsList);
+    freeList(rectsList);
+
     return result;
 }
    
@@ -334,7 +335,7 @@ int numCirclesWithArea(const SVG* img, float area){
     }
     
     int result = compare(circlesList, compareCirclesAreaFunc, &area);
-    // freeList(circlesList);
+    freeList(circlesList);
     return result;
 }
 
@@ -347,7 +348,7 @@ int numPathsWithdata(const SVG* img, const char* data){
     }
 
     int result =  comparePathsMain(pathsList, data);
-    // freeList(pathsList);
+    freeList(pathsList);
     return result;
 }
 

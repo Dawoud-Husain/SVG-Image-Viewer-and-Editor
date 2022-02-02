@@ -52,4 +52,6 @@ int getGroupLen(void* theGroup);
 
 int sumAllAttr(const SVG* img);
 
+void dummyDelete(void*d);
+
 #endif

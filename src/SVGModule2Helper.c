@@ -71,6 +71,11 @@ int sumAllAttr(const SVG* img){
         count += tmpGroup->otherAttributes->length;
     }
 
+    freeList(rectsList);
+    freeList(circlesList);
+    freeList(pathsList);
+    freeList(groupsList);
+
     return count;
 }
 
@@ -300,3 +305,6 @@ void getGroupsFromAllGroups(List* groupsList, List*groupsListInput){
     }
 }
 
+void dummyDelete(void*d){
+    return;
+}

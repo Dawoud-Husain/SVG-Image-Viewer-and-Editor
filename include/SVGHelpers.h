@@ -47,4 +47,9 @@ int comparePathsDataFunc(char * first, const char * second);
 int compareGroupsLenFunc(const void* first,const void* second);
 
 
+int sumAllGroupsWithLen(List * list, int searchLength);
+int getGroupLen(void* theGroup);
+
+int sumAllAttr(const SVG* img);
+
 #endif

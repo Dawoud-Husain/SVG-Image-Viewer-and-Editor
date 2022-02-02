@@ -353,7 +353,10 @@ int numPathsWithdata(const SVG* img, const char* data){
 
 // Function that returns the number of all groups with the specified length - see A1 Module 2 for details
 int numGroupsWithLen(const SVG* img, int len){
-    return 0;
+
+    int numGroupsWithLen = sumAllGroupsWithLen(img->groups, len);
+
+    return numGroupsWithLen;
 }
 
 /*  Function that returns the total number of Attribute structs in the SVG struct - i.e. the number of Attributes
@@ -364,7 +367,10 @@ int numGroupsWithLen(const SVG* img, int len){
     *@param obj - a pointer to an SVG struct
 */
 int numAttr(const SVG* img){
-    return 0; 
+    
+    int numAttr = sumAllAttr(img);
+
+    return numAttr;
 }
 
 

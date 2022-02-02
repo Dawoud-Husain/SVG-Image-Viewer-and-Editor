@@ -12,6 +12,104 @@
 #include <libxml/tree.h>
 
 
+int sumAllAttr(const SVG* img){
+
+    int count = 0;
+
+    //**************************************OtherAttributes*******************************
+
+    count += img->otherAttributes->length;
+    // void* elem0;
+    // List * attrList = img->otherAttributes;
+    // ListIterator iter0 = createIterator(attrList);
+    
+    // while ((elem = nextElement(&iter0)) != NULL){
+    //     Rectangle* tmpRectangle = (Rectangle*)elem;
+    //     count += tmpRectangle->otherAttributes->length;
+    // }
+
+
+    //**************************************Rectangles*******************************
+    void* elem;
+    List * rectsList = getRects(img);
+    ListIterator iter1 = createIterator(rectsList);
+    
+    while ((elem = nextElement(&iter1)) != NULL){
+        Rectangle* tmpRectangle = (Rectangle*)elem;
+        count += tmpRectangle->otherAttributes->length;
+    }
+    
+    void* elem2;
+    List * circlesList = getCircles(img);
+    ListIterator iter2 = createIterator(circlesList);
+    
+    //**************************************Circles*******************************
+    while ((elem2 = nextElement(&iter2)) != NULL){
+        Circle* tmpCircle = (Circle*)elem2;
+        count += tmpCircle->otherAttributes->length;
+    }
+
+    // **************************************Paths*******************************
+
+    void* elem3;
+    List * pathsList = getPaths(img);
+    ListIterator iter3 = createIterator(pathsList);
+   
+    while ((elem3 = nextElement(&iter3)) != NULL){
+        Path* tmpPath = (Path*)elem3;
+        count += tmpPath->otherAttributes->length;     
+    }
+
+     //**************************************Groups******************************* 
+
+    void* elem4;
+    List * groupsList = getGroups(img);
+    ListIterator iter4 = createIterator(groupsList);
+
+    while ((elem4 = nextElement(&iter4)) != NULL){
+        Group* tmpGroup = (Group*)elem4;
+        count += tmpGroup->otherAttributes->length;
+    }
+
+    return count;
+}
+
+
+int sumAllGroupsWithLen(List * list, int searchLength){
+    int count = 0;
+
+    ListIterator itr = createIterator(list);
+
+	void* data = nextElement(&itr);
+	while (data != NULL)
+	{
+
+		int groupLen = getGroupLen(data);
+
+        if(groupLen == searchLength){
+            count += 1;
+        }
+
+		data = nextElement(&itr);
+	}
+
+    return count;
+}
+
+
+int getGroupLen(void* theGroup){
+
+    Group* tmpGroup = (Group*)theGroup;
+    int lengthGroup = 0;
+
+    lengthGroup += tmpGroup -> rectangles -> length;
+    lengthGroup += tmpGroup -> circles -> length;
+    lengthGroup += tmpGroup -> paths -> length;
+    lengthGroup += tmpGroup -> groups -> length;
+     
+    return lengthGroup;
+}
+
 int compare(List * list, int (*customCompare)(const void* first,const void* second), const void* searchRecord){
     int numMatches = 0;
 
@@ -111,6 +209,7 @@ int comparePathsDataFunc(char * first, const char * second){
 }
 
 int compareGroupsLenFunc(const void* first,const void* second){
+
     return 0;
 }
 

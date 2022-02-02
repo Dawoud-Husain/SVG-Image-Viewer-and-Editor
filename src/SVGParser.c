@@ -2,7 +2,7 @@
 // ID: 1146816
 
 #include "SVGParser.h"
-#include "SVGAdditionalHelper.h"
+#include "SVGHelpers.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -313,30 +313,44 @@ List* getGroups(const SVG* img){
 
 // Function that returns the number of all rectangles with the specified area. Return 0 if no such rectangles are found, or if any of the arguments are invalid.
 int numRectsWithArea(const SVG* img, float area){
-    
     List* rectsList = getRects(img);
-
 
     if(rectsList == NULL){
         return 0;
     }
 
-    if(compare(rectsList, compareRectanglesAreaFunc, &area) == 1){
-        return 1;
-    }
-
-
-    return 0;
+    int result = compare(rectsList, compareRectanglesAreaFunc, &area);
+    // freeList(rectsList);
+    return result;
 }
+   
 
 //Function that returns the number of all circles with the specified area. Return 0 if no such circles are found, or if any of the arguments are invalid.
 int numCirclesWithArea(const SVG* img, float area){
-    return 0;
+     List* circlesList = getCircles(img);
+
+    if(circlesList == NULL){
+        return 0;
+    }
+    
+    int result = compare(circlesList, compareCirclesAreaFunc, &area);
+    // freeList(circlesList);
+    return result;
 }
+
 // Function that returns the number of all paths with the specified data - i.e. Path.data field
 int numPathsWithdata(const SVG* img, const char* data){
-    return 0; 
+    List* pathsList = getPaths(img);
+
+    if(pathsList == NULL){
+        return 0;
+    }
+
+    int result =  comparePathsMain(pathsList, data);
+    // freeList(pathsList);
+    return result;
 }
+
 // Function that returns the number of all groups with the specified length - see A1 Module 2 for details
 int numGroupsWithLen(const SVG* img, int len){
     return 0;
@@ -350,7 +364,7 @@ int numGroupsWithLen(const SVG* img, int len){
     *@param obj - a pointer to an SVG struct
 */
 int numAttr(const SVG* img){
-    return 0;
+    return 0; 
 }
 
 

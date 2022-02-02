@@ -2,7 +2,7 @@
 // ID: 1146816
     
 #include "SVGParser.h"
-#include "SVGAdditionalHelper.h"
+#include "SVGHelpers.h"
 
 #include <stdio.h>
 #include <string.h>

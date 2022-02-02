@@ -98,11 +98,14 @@ int main(int argc, char **argv)
     printf("Num Rects with area 716404 is: %d expected 1\n", numRectsWithArea(mySVG, 716404.0));
     
 
+    printf("Num Circles with area 0 is: %d expected 0\n", numCirclesWithArea(mySVG, 0.0));
+    printf("Num Circles with area 314.16 is: %d expected 5\n", numCirclesWithArea(mySVG, 314.16));
+    
+
+    printf("Num Paths with data safdsagfag is: %d expected 0\n", numPathsWithdata(mySVG, "safdsagfag"));
+    printf("Num Paths with data M200,300 Q400,50 600,300 T1000,300 is: %d expected 1\n", numPathsWithdata(mySVG, "M200,300 Q400,50 600,300 T1000,300"));
 
    deleteSVG(mySVG);
-
-
-
     
     return 0;
 }

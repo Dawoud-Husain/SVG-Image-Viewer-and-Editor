@@ -313,6 +313,11 @@ List* getGroups(const SVG* img){
 
 // Function that returns the number of all rectangles with the specified area. Return 0 if no such rectangles are found, or if any of the arguments are invalid.
 int numRectsWithArea(const SVG* img, float area){
+
+    if(img == NULL){
+        return 0;
+    }
+
     List* rectsList = getRects(img);
 
     if(rectsList == NULL){
@@ -328,6 +333,11 @@ int numRectsWithArea(const SVG* img, float area){
 
 //Function that returns the number of all circles with the specified area. Return 0 if no such circles are found, or if any of the arguments are invalid.
 int numCirclesWithArea(const SVG* img, float area){
+
+    if(img == NULL){
+        return 0;
+    }
+
      List* circlesList = getCircles(img);
 
     if(circlesList == NULL){
@@ -341,6 +351,11 @@ int numCirclesWithArea(const SVG* img, float area){
 
 // Function that returns the number of all paths with the specified data - i.e. Path.data field
 int numPathsWithdata(const SVG* img, const char* data){
+
+    if(img == NULL){
+        return 0;
+    }
+
     List* pathsList = getPaths(img);
 
     if(pathsList == NULL){
@@ -355,6 +370,10 @@ int numPathsWithdata(const SVG* img, const char* data){
 // Function that returns the number of all groups with the specified length - see A1 Module 2 for details
 int numGroupsWithLen(const SVG* img, int len){
 
+    if(img == NULL){
+        return 0;
+    }
+
     int numGroupsWithLen = sumAllGroupsWithLen(img->groups, len);
 
     return numGroupsWithLen;
@@ -368,6 +387,10 @@ int numGroupsWithLen(const SVG* img, int len){
     *@param obj - a pointer to an SVG struct
 */
 int numAttr(const SVG* img){
+
+    if(img == NULL){
+        return 0;
+    }
     
     int numAttr = sumAllAttr(img);
 

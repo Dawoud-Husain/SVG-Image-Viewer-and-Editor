@@ -1,4 +1,3 @@
-
 // Name: Dawoud Husain
 // ID: 1146816
     
@@ -11,6 +10,9 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+
+
+//Citation: Parts of the functions in the file was taken from the CIS2750 libXmlExample.c authored by Dodji Seketeli
 
 
 Rectangle * getRectFromSingleNode(xmlNode * a_node){

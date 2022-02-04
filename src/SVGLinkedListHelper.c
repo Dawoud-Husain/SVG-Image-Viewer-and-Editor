@@ -6,6 +6,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+//Citation: Parts of the functions in the file was taken from the CIS2750 StructListDemo.c code sample
 
 void deleteAttribute( void* data){
     Attribute* tmpAttribute;

@@ -1,6 +1,8 @@
 // Name: Dawoud Husain
 // ID: 1146816
 
+//Citation: Parts of the createSVG function was taken from the CIS2750 libXmlExample.c authored by Dodji Seketeli
+
 #include "SVGParser.h"
 #include "SVGHelpers.h"
 
@@ -31,12 +33,14 @@ SVG* createSVG(const char* fileName){
     /*parse the file and get the DOM */
     doc = xmlReadFile(fileName, NULL, 0);
     if (doc == NULL) {
-        // printf("error: could not parse file\n");
-        xmlFreeDoc(doc);
-        xmlCleanupParser();
+        //printf("error: could not parse file\n");
+        // xmlFreeDoc(doc);
+        // xmlCleanupParser();
+        
         return NULL;
     }
 
+    
     root_element = xmlDocGetRootElement(doc);
 
     SVG * createdSVG = malloc(sizeof(SVG) + 100000);
@@ -99,6 +103,10 @@ char* SVGToString(const SVG* img){
 // This function returns a humanly readable string representation of the entire vector image object. It will be
 // used mostly by you, for debugging your parser. It must not modify the vector image object in any way. The
 // function must allocate the string dynamically.
+
+    if(img == NULL){
+        return NULL;
+    }
 
     char *OutputString;
     

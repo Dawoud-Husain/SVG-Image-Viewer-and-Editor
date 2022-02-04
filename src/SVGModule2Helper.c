@@ -20,16 +20,7 @@ int sumAllAttr(const SVG* img){
     //**************************************OtherAttributes*******************************
 
     count += img->otherAttributes->length;
-    // void* elem0;
-    // List * attrList = img->otherAttributes;
-    // ListIterator iter0 = createIterator(attrList);
-    
-    // while ((elem = nextElement(&iter0)) != NULL){
-    //     Rectangle* tmpRectangle = (Rectangle*)elem;
-    //     count += tmpRectangle->otherAttributes->length;
-    // }
-
-
+  
     //**************************************Rectangles*******************************
     void* elem;
     List * rectsList = getRects(img);

@@ -1,10 +1,9 @@
 // Name: Dawoud Husain
 // ID: 1146816
-    
+
+#include "SVGA1Helpers.h"
+#include "SVGA2Helpers.h"
 #include "SVGParser.h"
-#include <stdio.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 
 //Citation: Parts of the functions in the file was taken from the CIS2750 StructListDemo.c code sample
 

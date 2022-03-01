@@ -376,6 +376,7 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
         }
     }
 
+
     //*****************************************Paths***************************
     void* pathElement;
     iter = createIterator(img->paths);

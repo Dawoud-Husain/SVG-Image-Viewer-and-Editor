@@ -11,13 +11,33 @@ SVG* createValidSVG(const char* fileName, const char* schemaFile) {
         return NULL;
     }
 
+    FILE* fptr = fopen(fileName, "r");
+    if (fptr == NULL) {
+        return NULL;
+    }
+
+    fclose(fptr);
+
+    fptr = fopen(schemaFile, "r");
+    if (fptr == NULL) {
+        return NULL;
+    }
+
+    fclose(fptr);
+
     xmlDoc* doc = NULL;
     xmlNode* root_element = NULL;
 
     LIBXML_TEST_VERSION
     /*parse the file and get the DOM */
-    doc = xmlReadFile(fileName, schemaFile, 0);
+    //doc = xmlReadFile(fileName, schemaFile, 0);
+
+     doc = xmlReadFile(fileName, NULL, 0);
+
+   
     if (doc == NULL) {
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
         return NULL;
     }
 
@@ -73,6 +93,12 @@ SVG* createValidSVG(const char* fileName, const char* schemaFile) {
     //     return NULL;
     // }
 
+    
+    if (validateSVGWithSchema(fileName, schemaFile) == false) {
+        deleteSVG(createdSVG);
+        return NULL;
+    }
+
     return createdSVG;
 }
 
@@ -104,6 +130,10 @@ bool validateSVG(const SVG* img, const char* schemaFile) {
     }
 
     if (validateSVGStruct(img) == false) {
+        return false;
+    }
+
+    if (validateSVGWithSchema("test.svg", schemaFile) == false) {
         return false;
     }
 
@@ -148,7 +178,9 @@ char* attrToJSON(const Attribute* a) {
     //     Converts an Attribute struct to a string in JSON format. {"name":"attrName","value":"attrVal"}
 
     if (a == NULL) {
-        return "{}";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = convretAttrToJSON(a);
@@ -160,7 +192,9 @@ char* circleToJSON(const Circle* c) {
     // Converts a Circle struct to a string in JSON format: {"cx" : 32, "cy" : 32, "r" : 30, "numAttr" : 0, "units" : "cm"}
 
     if (c == NULL) {
-        return "{}";
+          char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = convretCircleToJSON(c);
@@ -172,7 +206,9 @@ char* rectToJSON(const Rectangle* r) {
     // Converts a Rectangle struct to a string in JSON format  { "x" : xVal, "y" : yVal, "w" : wVal, "h" : hVal, "numAttr" : attVal, "units" : "unitStr" }
 
     if (r == NULL) {
-        return "{}";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = covertRectangleToJSON(r);
@@ -185,7 +221,9 @@ char* pathToJSON(const Path* p) {
     //     following format : { "d" : "dVal", "numAttr" : attVal }
 
     if (p == NULL) {
-        return "{}";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = covertPathToJSON(p);
@@ -198,7 +236,9 @@ char* groupToJSON(const Group* g) {
     //  following format : { "children" : cVal, "numAttr" : attVal }
 
     if (g == NULL) {
-        return "{}";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = covertGroupToJSON(g);
@@ -211,7 +251,9 @@ char* SVGtoJSON(const SVG* image) {
     //     following format : { "numRect" : numR, "numCirc" : numC, "numPaths" : numP, "numGroups" : numG }
 
     if (image == NULL) {
-        return "{}";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "{}");
+        return finalOutputString;
     }
 
     char* output = covertSVGtoJSON(image);
@@ -223,7 +265,9 @@ char* attrListToJSON(const List* list) {
     // a Circle - into a JSON string. You can - and should - use attrToJSON function defined above.
 
     if (list == NULL || getLength((List*)list) == 0) {
-        return "[]";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "[]");
+        return finalOutputString;
     }
 
     char* output = covertAttrListToJSON(list);
@@ -235,7 +279,9 @@ char* circListToJSON(const List* list) {
     // This function will convert a list of Circles into a JSON string.You can - and should - use circToJSON function defined above.
 
     if (list == NULL || getLength((List*)list) == 0) {
-        return "[]";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "[]");
+        return finalOutputString;
     }
 
     char* output = convertCircListToJSON(list);
@@ -246,7 +292,9 @@ char* rectListToJSON(const List* list) {
     // This function will convert a list of Rectangles into a JSON string.You can - and should - use rectToJSON function defined above
 
     if (list == NULL || getLength((List*)list) == 0) {
-        return "[]";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "[]");
+        return finalOutputString;
     }
 
     char* output = convertrectListToJSON(list);
@@ -257,7 +305,9 @@ char* pathListToJSON(const List* list) {
     // This function will convert a list of Paths into a JSON string.You can - and should - use pathToJSON function defined above.
 
     if (list == NULL || getLength((List*)list) == 0) {
-        return "[]";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "[]");
+        return finalOutputString;
     }
 
     char* output = convertpathListToJSON(list);
@@ -271,9 +321,23 @@ char* groupListToJSON(const List* list) {
     // [GroupString1,GroupString2,...,GroupStringN]
 
     if (list == NULL || getLength((List*)list) == 0) {
-        return "[]";
+        char* finalOutputString = calloc(10, 100000);
+        strcpy(finalOutputString, "[]");
+        return finalOutputString;
     }
 
     char* output = covertGroupListToJSON(list);
     return output;
+}
+
+SVG* JSONtoSVG(const char* svgString){
+    return NULL;
+}
+
+Rectangle* JSONtoRect(const char* svgString){
+    return NULL;
+}
+
+Circle* JSONtoCircle(const char* svgString){
+    return NULL;
 }

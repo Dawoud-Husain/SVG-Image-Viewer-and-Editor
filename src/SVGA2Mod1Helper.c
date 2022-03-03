@@ -1,6 +1,68 @@
 #include "SVGA1Helpers.h"
 #include "SVGA2Helpers.h"
 
+bool validateSVGWithSchema(const char* fileName, const char* schemaFile) {
+
+    const char* XMLFileName = fileName;
+    const char* XSDFileName = schemaFile;
+    xmlDocPtr doc;
+    xmlSchemaPtr schema = NULL;
+    xmlSchemaParserCtxtPtr ctxt;
+    int ret;
+
+    xmlLineNumbersDefault(1);
+
+    ctxt = xmlSchemaNewParserCtxt(XSDFileName);
+
+    xmlSchemaSetParserErrors(ctxt, (xmlSchemaValidityErrorFunc)fprintf, (xmlSchemaValidityWarningFunc)fprintf, stderr);
+    schema = xmlSchemaParse(ctxt);
+    xmlSchemaFreeParserCtxt(ctxt);
+
+    doc = xmlReadFile(XMLFileName, NULL, 0);
+
+    if (doc == NULL) {
+        return false;
+    } 
+    
+    else {
+        xmlSchemaValidCtxtPtr ctxt;
+
+        ctxt = xmlSchemaNewValidCtxt(schema);
+        xmlSchemaSetValidErrors(ctxt, (xmlSchemaValidityErrorFunc)fprintf, (xmlSchemaValidityWarningFunc)fprintf, stderr);
+        ret = xmlSchemaValidateDoc(ctxt, doc);
+
+        if (ret == 0) {
+            //Valid
+        } 
+
+        //Failed
+        else if (ret > 0) {
+            return false;
+        } 
+
+        //Error
+        else {
+            return false;
+        }
+        xmlSchemaFreeValidCtxt(ctxt);
+        xmlFreeDoc(doc);
+    }
+
+
+    // Free Varibles/Parser
+    if (schema != NULL){
+        xmlSchemaFree(schema);
+    }
+
+    xmlSchemaCleanupTypes();
+    xmlCleanupParser();
+    xmlMemoryDump();
+
+    
+
+    return true;
+}
+
 bool validateSVGStruct(const SVG* img) {
     if (img->title == NULL || img->description == NULL || img->namespace == NULL || strcmp(img->namespace, "") == 0) {
         return false;
@@ -76,9 +138,9 @@ bool validateRect(Rectangle* tmpRectangle) {
         return false;
     }
 
-    if (isValidUnit(tmpRectangle->units) == false) {
-        return false;
-    }
+    // if (isValidUnit(tmpRectangle->units) == false) {
+    //     return false;
+    // }
 
     void* svcAccElement;
     ListIterator accIter = createIterator(tmpRectangle->otherAttributes);
@@ -98,9 +160,9 @@ bool validateCircle(Circle* tmpCircle) {
         return false;
     }
 
-    if (isValidUnit(tmpCircle->units) == false) {
-        return false;
-    }
+    // if (isValidUnit(tmpCircle->units) == false) {
+    //     return false;
+    // }
 
     void* svcAccElement;
     ListIterator accIter = createIterator(tmpCircle->otherAttributes);
@@ -264,8 +326,6 @@ bool validateXMLTREE(const char* xmlFile, const char* schemaFile) {
     return true;
 }
 
-
-
 bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
     //     A function that converts an SVG into an xmlDoc struct, i.e. a libxml tree. This tree can be then be easily saved
     // to disk or validated against an XSD file using libxml functionality.
@@ -276,8 +336,11 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
     // xmlNodePtr node1 = NULL; /* node pointers */
 
     xmlNsPtr xmlNSPtr = NULL;
-    char buff[1000000];
-    char buff2[1000000];
+    // char buff[1000000];
+    // char buff2[1000000];
+
+    char* buff = malloc(sizeof(char) * 100000000);
+    char* buff2 = malloc(sizeof(char) * 1000000);
 
     void* elem;
 
@@ -313,8 +376,12 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
     AttributeIter = createIterator(img->otherAttributes);
     while ((elem = nextElement(&AttributeIter)) != NULL) {
         Attribute* tmpAttribute = (Attribute*)elem;
+        strcpy(buff, "");
+        strcpy(buff2, "");
+
         sprintf(buff, "%s", tmpAttribute->name);
         sprintf(buff2, "%s", tmpAttribute->value);
+        // strcpy(buff, "dsaa");
         xmlNewProp(root_node, BAD_CAST buff, BAD_CAST buff2);
     }
 
@@ -376,7 +443,6 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
         }
     }
 
-
     //*****************************************Paths***************************
     void* pathElement;
     iter = createIterator(img->paths);
@@ -412,6 +478,10 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
     xmlFreeDoc(doc);
     xmlCleanupParser();
     xmlMemoryDump();
+
+    free(buff);
+    free(buff2);
+    free(pointer);
     return true;
 }
 

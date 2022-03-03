@@ -29,6 +29,10 @@ Rectangle *getRectFromSingleNode(xmlNode *a_node) {
                     tmpRectangle->units[index] = *tempPointer;
                     index++;
                 }
+
+                else {
+                    strcpy(tmpRectangle->units, "");
+                }
             }
         }
 
@@ -82,6 +86,10 @@ Circle *getCircleFromSingleNode(xmlNode *a_node) {
                     tmpCircle->units[index] = *tempPointer;
                     index++;
                 }
+
+                else {
+                    strcpy(tmpCircle->units, "");
+                }
             }
         }
 
@@ -118,8 +126,8 @@ Path *getPathFromSingleNode(xmlNode *a_node) {
     for (attr = cur_node->properties; attr != NULL; attr = attr->next) {
         xmlNode *value = attr->children;
         char *attrName = (char *)attr->name;
-        char *cont = malloc(10000000);
-        cont = (char *)(value->content);
+        // char *cont = malloc(10000000);
+        char *cont = (char *)(value->content);
 
         if (strcmp(attrName, "d") == 0) {
             int index = 0;
@@ -159,7 +167,8 @@ Group *getGroupFromSingleNode(xmlNode *a_node) {
         xmlNode *value = attr->children;
         char *attrName = (char *)attr->name;
         char *cont = (char *)(value->content);
-        Attribute *tmpAttribute = (Attribute *)calloc(sizeof(Attribute) + 100000, 1);
+        // Attribute *tmpAttribute = (Attribute *)calloc(sizeof(Attribute) + 100000, 1);
+        Attribute *tmpAttribute = (Attribute *)calloc(1000, sizeof(Attribute) + 100000);
         tmpAttribute->name = (char *)calloc(sizeof(char) * 10000, 1);
         strcpy(tmpAttribute->name, attrName);
         allocateFlexArray(cont, tmpAttribute->value);
@@ -227,6 +236,10 @@ List *getRectsFromNode(xmlNode *a_node, List *rectsList) {
                                 tmpRectangle->units[index] = *tempPointer;
                                 index++;
                             }
+
+                            else {
+                                strcpy(tmpRectangle->units, "");
+                            }
                         }
                     }
 
@@ -292,6 +305,8 @@ List *getCirclesFromNode(xmlNode *a_node, List *circlesList) {
                             if (isalpha(*tempPointer)) {
                                 tmpCircle->units[index] = *tempPointer;
                                 index++;
+                            } else {
+                                strcpy(tmpCircle->units, "");
                             }
                         }
                     }

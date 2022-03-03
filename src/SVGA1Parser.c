@@ -27,8 +27,8 @@ SVG* createSVG(const char* fileName){
     doc = xmlReadFile(fileName, NULL, 0);
     if (doc == NULL) {
         //printf("error: could not parse file\n");
-        // xmlFreeDoc(doc);
-        // xmlCleanupParser();
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
         
         return NULL;
     }

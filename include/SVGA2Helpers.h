@@ -22,6 +22,7 @@ bool validateGroup(Group* tmpGroup);
 
 bool isValidUnit(char* unit);
 
+bool validateSVGWithSchema(const char* fileName, const char* schemaFile);
 //*********************************************MOD 2 ***********************************************************
 
 bool updateElement(SVG* img, elementType elemType, int elemIndex, Attribute* newAttribute);
@@ -38,7 +39,6 @@ bool insertCSVGCircleAttr(SVG* img, elementType type, void* newElement);
 bool insertCSVGPathAttr(SVG* img, elementType type, void* newElement);
 bool insertCSVGGroupAttr(SVG* img, elementType type, void* newElement);
 
-
 //******************************************MOD 3 ***********************************************************
 char* convretAttrToJSON(const Attribute* a);
 char* convretCircleToJSON(const Circle* a);
@@ -48,7 +48,7 @@ char* covertGroupToJSON(const Group* g);
 
 char* covertSVGtoJSON(const SVG* image);
 char* covertAttrListToJSON(const List* list);
-char * convertrectListToJSON(const List *list);
+char* convertrectListToJSON(const List* list);
 char* convertCircListToJSON(const List* list);
 char* convertpathListToJSON(const List* list);
 char* covertGroupListToJSON(const List* list);

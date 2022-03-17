@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CHANGE ME</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SVG CRUD webapp" />
+    <meta name="keywords" content="SVG" />
+    <meta name="author" content="Dawoud Husain" />
+    <!-- Load jquery, bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <!-- Custom CSS End -->
+  </head>
+
+  <body>
+    <h3>SVGs Database</h3>
+
+    <div class="container">
+      <h2>File Log</h2>
+
+      <table
+        action="/upload"
+        method="get"
+        class="table table-dark table-striped"
+      >
+        <thead>
+          <tr id="FileLogHead">
+          </tr>
+        </thead>
+        <tbody id="FileLogBody"></tbody>
+      </table>
+    </div>
+
+ 
+
+    <form
+      ref="uploadForm"
+      id="uploadForm"
+      action="/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="form-group">
+        <input type="file" name="uploadFile" class="btn btn-secondary" />
+        <input type="submit" value="Upload" class="btn btn-secondary" />
+      </div>
+    </form>
+
+    <div class="dropdown">
+      <button
+        class="btn dropdown-toggle config_btn"
+        type="button"
+        data-toggle="dropdown"
+        id="btn_SVGDropDown"
+      >
+        <span class="caret">Select SVG</span>
+      </button>
+      <u1 class="dropdown-menu" id="SVGDropDown"> </u1>
+    </div>
+
+    <!-- View Panel Image -->
+    <table>
+      <tbody id="ViewPanelImage"></tbody>
+    </table>
+
+    <!-- View Panel Title/Descripton  -->
+
+    <table>
+      <thead>
+        <tr id="ViewPanelTRTitleDesc">
+        </tr>
+      </thead>
+      <tbody id="ViewPanelBodyTitleDesc">
+      </tbody>
+    </table>
+
+    <!-- View Panel Components Summary -->
+    <table>
+      <thead>
+        <tr id="ViewPanelTRComponentsSummary"> 
+      </tr>
+      <tbody id="ViewPanelBodyComponentsSummary">
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="fileUploadStatus"></div>
+
+
+    <hr />
+    <div id="blah">I am blah</div>
+    <hr />
+
+    <!-- Data Entry Form  -->
+    <form ref="someform" id="someform">
+    </form>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <br/>
+
+    <br/>
+
+    <br/>
+    <br/>
+    <br/>
+
+
+    <!-- Leave me at the bottom of body -->
+    <script src="/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+  </body>
+</html>

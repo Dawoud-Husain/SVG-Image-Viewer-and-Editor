@@ -72,21 +72,36 @@ app.get('/uploads/:name', function (req, res) {
 
 //******************** Your code goes here ******************** 
 
-let sharedLib = ffi.Library('parser/bin/libsvgparser.so', {
+let sharedLib = ffi.Library('./libsvgparser.so', {
  
   'isValidSVGFromFile': ['bool', ['string', 'string']],
   'getFileSize': ['int', ['string']],
   'getNumsFromFile' : ['string', ['string', 'string']],
 
   'getSVGDescription': ['string', ['string', 'string']],
+  'getSVGTitle': ['string', ['string', 'string']],
 
   'getRectsImmediateChildrenSummary': ['string', ['string', 'string']],
+  'getRectsAttrImmediateChildrenSummary': ['string', ['string', 'string']],
+
   'getCirclesImmediateChildrenSummary': ['string', ['string', 'string']],
+  'getCircsAttrImmediateChildrenSummary': ['string', ['string', 'string']],
+
   'getPathsImmediateChildrenSummary': ['string', ['string', 'string']],
+  'getPathsAttrImmediateChildrenSummary': ['string', ['string', 'string']],
+
   'getGroupsImmediateChildrenSummary': ['string', ['string', 'string']],
+  'getGroupsAttrImmediateChildrenSummary': ['string', ['string', 'string']],
 
-  'updateSVGNameDesc': ['bool', ['string', 'string', 'string', 'string'] ]
+  'updateSVGNameDesc': ['bool', ['string', 'string', 'string', 'string'] ],
 
+
+  'scaleRect': ['bool', ['string', 'string', 'int']],
+  'scaleCirc': ['bool', ['string', 'string', 'int']],
+
+
+  'addRect': ['bool', ['string', 'string', 'float', 'float', 'float', 'float']],
+  'addCirc': ['bool', ['string', 'string', 'float', 'float', 'float']]
 });
 
 
@@ -118,12 +133,18 @@ app.get('/endpoint2', function (req, res) {
   let numPaths = [];
   let numGroups = [];
 
+  let actualTitles = [];
   let descriptors = []; 
 
   let rectsComponentSummary = [];
   let circlesComponentSummary = []; 
   let pathsComponentSummary = [];
   let groupsComponentSummary = [];
+
+  let rectsComponentAttrSummary = [];
+  let circlesComponentAttrSummary = [];
+  let pathsComponentAttrSummary = [];
+  let groupsComponentAttrSummary = [];
 
   let sucessValue = true;
 
@@ -141,7 +162,7 @@ app.get('/endpoint2', function (req, res) {
         files.forEach(file => {
 
           let svgFileName = 'uploads/' + file.name;
-          let thing = sharedLib.isValidSVGFromFile(svgFileName, 'parser/bin/svg.xsd');
+          let thing = sharedLib.isValidSVGFromFile(svgFileName, 'svg.xsd');
 
           if (thing == false) {
             sucessValue = false;
@@ -155,7 +176,7 @@ app.get('/endpoint2', function (req, res) {
             titles[numEntries] = file.name;
             fileSizes[numEntries] = sharedLib.getFileSize(svgFileName);
             
-            let text = sharedLib.getNumsFromFile(svgFileName, 'parser/bin/svg.xsd');
+            let text = sharedLib.getNumsFromFile(svgFileName, 'svg.xsd');
             const nums = JSON.parse(text);
 
             numRects[numEntries] = nums.numRect;
@@ -163,13 +184,18 @@ app.get('/endpoint2', function (req, res) {
             numPaths[numEntries] = nums.numPaths;
             numGroups[numEntries] = nums.numGroups;
 
-            descriptors[numEntries] = sharedLib.getSVGDescription(svgFileName, 'parser/bin/svg.xsd');
+            actualTitles[numEntries] = sharedLib.getSVGTitle(svgFileName, 'svg.xsd');
+            descriptors[numEntries] = sharedLib.getSVGDescription(svgFileName, 'svg.xsd');
       
-            rectsComponentSummary[numEntries] = sharedLib.getRectsImmediateChildrenSummary(svgFileName, 'parser/bin/svg.xsd');
-            circlesComponentSummary[numEntries] = sharedLib.getCirclesImmediateChildrenSummary(svgFileName, 'parser/bin/svg.xsd');
-            pathsComponentSummary[numEntries] = sharedLib.getPathsImmediateChildrenSummary(svgFileName, 'parser/bin/svg.xsd');
-            groupsComponentSummary[numEntries] = sharedLib.getGroupsImmediateChildrenSummary(svgFileName, 'parser/bin/svg.xsd');
+            rectsComponentSummary[numEntries] = sharedLib.getRectsImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            circlesComponentSummary[numEntries] = sharedLib.getCirclesImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            pathsComponentSummary[numEntries] = sharedLib.getPathsImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            groupsComponentSummary[numEntries] = sharedLib.getGroupsImmediateChildrenSummary(svgFileName, 'svg.xsd');
 
+            rectsComponentAttrSummary[numEntries] = sharedLib.getRectsAttrImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            circlesComponentAttrSummary[numEntries] = sharedLib.getCircsAttrImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            pathsComponentAttrSummary[numEntries] = sharedLib.getPathsAttrImmediateChildrenSummary(svgFileName, 'svg.xsd');
+            groupsComponentAttrSummary[numEntries] = sharedLib.getGroupsAttrImmediateChildrenSummary(svgFileName, 'svg.xsd');
 
             numEntries++;
           }
@@ -183,20 +209,29 @@ app.get('/endpoint2', function (req, res) {
           names: retStr,
           entries: numEntries,
           sizes: fileSizes,
-          title: titles,
+         
 
           numRectangle: numRects,
           numCircle: numCircles,
           numPath : numPaths,
           numGroup : numGroups,
           
+          title : titles,
+
+          actualTitle: actualTitles,
           desc: descriptors,
 
           rectsComponentSum : rectsComponentSummary,
-          circlesComponentSum : circlesComponentSummary,
-          pathsComponentSum : pathsComponentSummary,  
-          groupsComponentSum : groupsComponentSummary
+          rectsAttrComponentSum: rectsComponentAttrSummary,
 
+          circlesComponentSum : circlesComponentSummary,
+          circlesAttrComponentSum : circlesComponentAttrSummary,
+
+          pathsComponentSum : pathsComponentSummary,  
+          pathsAttrComponentSummary : pathsComponentAttrSummary,
+  
+          groupsComponentSum : groupsComponentSummary,
+          groupsComponentAttrSummary : groupsComponentAttrSummary
 
         }
       );
@@ -206,13 +241,11 @@ app.get('/endpoint2', function (req, res) {
 
 app.get('/updateNameDescEndpoint', function (req, res) {
 
-  let myNewName = req.query.newName;
-  let myNewDesc = req.query.newDesc;
+  let myNewName = req.query.name;
+  let myNewDesc = req.query.desc;
+  let fileName = 'uploads/' + req.query.fileName
 
-
-  let svgFileName = 'uploads/' + req.query.fileName
-
-  if (sharedLib.updateSVGNameDesc(svgFileName, 'parser/bin/svg.xsd', myNewName, myNewDesc) == false){
+  if (sharedLib.updateSVGNameDesc(fileName, 'svg.xsd', myNewName, myNewDesc) == false){
     console.log("updateSVGNameDesc Error");
   }
 
@@ -222,6 +255,106 @@ app.get('/updateNameDescEndpoint', function (req, res) {
     }
   );
 });
+
+
+
+app.get('/updateRectsScaleEndpoint', function (req, res) {
+
+  let myNewScale = req.query.scale;
+  let fileName = 'uploads/' + req.query.fileName
+
+  if (sharedLib.scaleRect(fileName, 'svg.xsd', myNewScale) == false) {
+    console.log("updateSVGNameDesc Error");
+  }
+
+  res.send(
+    {
+
+    }
+  );
+});
+
+
+
+app.get('/updatecirclesScaleEndpoint', function (req, res) {
+
+  let myNewScale = req.query.scale;
+  let fileName = 'uploads/' + req.query.fileName
+
+  if (sharedLib.scaleCirc(fileName, 'svg.xsd', myNewScale) == false) {
+    console.log("updateSVGNameDesc Error");
+  }
+
+  res.send(
+    {
+
+    }
+  );
+});
+
+
+
+app.get('/updatecirclesScaleEndpoint', function (req, res) {
+
+  let myNewScale = req.query.scale;
+  let fileName = 'uploads/' + req.query.fileName
+
+  if (sharedLib.scaleCirc(fileName, 'svg.xsd', myNewScale) == false) {
+    console.log("updateSVGNameDesc Error");
+  }
+
+  res.send(
+    {
+
+    }
+  );
+});
+
+
+app.get('/addRectEndpoint', function (req, res) {
+
+  let myX = req.query.newX;
+  let myY = req.query.newY;
+  let myWith = req.query.newWidth;
+  let myHeight = req.query.newHeight;
+
+  let fileName = 'uploads/' + req.query.fileName
+
+
+  if (sharedLib.addRect(fileName, 'svg.xsd', myX, myY, myWith, myHeight) == false) {
+    console.log("updateSVGNameDesc Error");
+  }
+
+  res.send(
+    {
+
+    }
+  );
+});
+
+
+app.get('/addCircEndpoint', function (req, res) {
+
+  let myX = req.query.newCX;
+  let myY = req.query.newCY;
+  let myR = req.query.newR;
+
+  let fileName = 'uploads/' + req.query.fileName
+
+  if (sharedLib.addCirc(fileName, 'svg.xsd', myX, myY, myR) == false) {
+    console.log("updateSVGNameDesc Error");
+  }
+
+  res.send(
+    {
+
+    }
+  );
+});
+
+
+
+
 
 
 

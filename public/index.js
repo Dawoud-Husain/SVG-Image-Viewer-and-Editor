@@ -277,7 +277,7 @@ jQuery(document).ready(function () {
                             },
                             success: function (data) {
 
-                                alert("Sucessfully Updated Data");
+                                alert("Sucessfully Updated Data, Refresh Page To See Changes");
 
                                 console.log("Sucessfully Updated Data");
                                 e.preventDefault();
@@ -332,7 +332,7 @@ jQuery(document).ready(function () {
                             },
                             success: function (data) {
 
-                                alert("Sucessfully Updated Data");
+                                alert("Sucessfully Updated Data, Refresh Page To See Changes");
                                 console.log("Sucessfully Updated Data");
                                 e.preventDefault();
 
@@ -385,7 +385,7 @@ jQuery(document).ready(function () {
                             },
                             success: function (data) {
 
-                                alert("Sucessfully Updated Data");
+                                alert("Sucessfully Updated Data, Refresh Page To See Changes");
                                 console.log("Sucessfully Updated Data");
                                 e.preventDefault();
 
@@ -457,7 +457,7 @@ jQuery(document).ready(function () {
                             },
                             success: function (data) {
 
-                                alert("Sucessfully Updated Data");
+                                alert("Sucessfully Updated Data, Refresh Page To See Changes");
                                 console.log("Sucessfully Updated Data");
                                 e.preventDefault();
 
@@ -520,7 +520,7 @@ jQuery(document).ready(function () {
                                 fileName: theFile
                             },
                             success: function (data) {
-                                alert("Sucessfully Updated Data");
+                                alert("Sucessfully Updated Data, Refresh Page To See Changes");
                                 console.log("Sucessfully Updated Data");
                                 e.preventDefault();
                             },

@@ -369,7 +369,7 @@ bool covertSVGTOXMLTree(const SVG* img, const char* fileName) {
         xmlNewChild(root_node, NULL, BAD_CAST "title", BAD_CAST img->title);
     }
 
-    if (strcmp(img->title, "") != 0) {
+    if (strcmp(img->description, "") != 0) {
         xmlNewChild(root_node, NULL, BAD_CAST "desc", BAD_CAST img->description);
     }
 

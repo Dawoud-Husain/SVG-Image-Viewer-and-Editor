@@ -5,9 +5,9 @@ LDFLAGS= -L.
 
 INC = include/
 SRC = src/
-BIN = bin/
+BIN = ../
 PARSER_SRC_FILES = $(wildcard src/SVG*.c)
-PARSER_OBJ_FILES = $(patsubst src/SVG%.c,bin/SVG%.o,$(PARSER_SRC_FILES))
+PARSER_OBJ_FILES = $(patsubst src/SVG%.c,../SVG%.o,$(PARSER_SRC_FILES))
 
 ifeq ($(UNAME), Linux)
 	XML_PATH = /usr/include/libxml2

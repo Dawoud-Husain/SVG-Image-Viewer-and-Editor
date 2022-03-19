@@ -60,13 +60,15 @@ char* covertAttrListToJSON(const List* list) {
         sprintf(tempString, "%s", convertOutput);
 
         strcat(finalOutputString, tempString);
-        free(tempString);
-        free(convertOutput);
 
-        if (count < (getLength((List*)list)) -1){
+        printf("Tempstring: %s\n", tempString);
+
+        if ((count < (getLength((List*)list)) - 1) && strcmp(tempString, "\0") != 0) {
             strcat(finalOutputString, ",");
         }
 
+        free(tempString);
+        free(convertOutput);
         count ++;
     }
 

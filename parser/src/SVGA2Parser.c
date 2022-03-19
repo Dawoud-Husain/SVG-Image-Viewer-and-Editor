@@ -292,7 +292,7 @@ char* rectListToJSON(const List* list) {
     // This function will convert a list of Rectangles into a JSON string.You can - and should - use rectToJSON function defined above
 
     if (list == NULL || getLength((List*)list) == 0) {
-        char* finalOutputString = calloc(10, 100000);
+        char* finalOutputString = calloc(10, 100000);   
         strcpy(finalOutputString, "[]");
         return finalOutputString;
     }

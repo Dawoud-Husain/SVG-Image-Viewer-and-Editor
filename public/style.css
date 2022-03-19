@@ -44,6 +44,23 @@ input[type=submit], button {
     }
 }
 
+
+#fileLogTable{
+    overflow-y:scroll;
+   height: 500px;
+   display:block;
+}
+
+/* #ViewPanelBodyTitleDesc{
+   overflow-y:scroll;
+   height: 800px;
+
+   overflow-x:scroll;
+   width: 600px;
+
+   display:block;
+} */
+
 table {
   text-align: left;
   position: relative;

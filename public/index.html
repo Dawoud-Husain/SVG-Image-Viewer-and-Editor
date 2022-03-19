@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CHANGE ME</title>
+    <title>SVG Image Viewer</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="SVG CRUD webapp" />
@@ -31,11 +31,12 @@
     ></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="shortcut icon" href="#">
     <!-- Custom CSS End -->
   </head>
 
   <body>
-    <h3>SVGs Database</h3>
+    <h3>SVG Image Viewer</h3>
 
     <div class="container">
       <h2>File Log</h2>
@@ -43,7 +44,8 @@
       <table
         action="/upload"
         method="get"
-        class="table table-dark table-striped"
+        id = "fileLogTable"
+
       >
         <thead>
           <tr id="FileLogHead">
@@ -53,6 +55,7 @@
       </table>
     </div>
 
+  <!--   class="table table-dark table-striped" -->
  
 
     <form
@@ -97,7 +100,7 @@
     </table>
 
     <!-- View Panel Components Summary -->
-    <table>
+    <table id = "fileLogTable">
       <thead>
         <tr id="ViewPanelTRComponentsSummary"> 
       </tr>
@@ -109,13 +112,27 @@
     <div id="fileUploadStatus"></div>
 
 
-    <hr />
-    <div id="blah">I am blah</div>
-    <hr />
-
     <!-- Data Entry Form  -->
-    <form ref="someform" id="someform">
+    <form ref="nameDescForm" id="nameDescForm">
     </form>
+
+     <form ref="rectsScalingForm" id="rectsScalingForm">
+    </form>
+
+     <form ref="circlesScalingForm" id="circlesScalingForm">
+    </form>
+
+
+    <form ref="addRectsForm" id="addRectsForm">
+    </form>
+
+    <form ref="addCirclesForm" id="addCirclesForm">
+    </form>
+
+
+    
+
+
 
     <br/>
     <br/>

@@ -2,6 +2,10 @@
 
 This project is a web-based application that allows users to upload, view, and perform basic edits on SVG (Scalable Vector Graphics) files. It utilizes a Node.js/Express backend, a C library for SVG parsing and manipulation, and a standard HTML/CSS/JavaScript frontend.
 
+**Click the image below to watch the demo on YouTube:**
+
+[![Watch the Demo Video](./Media/thumbnail.png)](https://youtu.be/6CJAK08mBy0)
+
 ## Features
 
 *   **SVG Upload:** Users can upload SVG files via a web interface.
